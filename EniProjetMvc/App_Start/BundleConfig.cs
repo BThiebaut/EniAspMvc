@@ -25,7 +25,11 @@ namespace EniProjetMvc
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/AdminLTE.min.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/adminlte").Include(
+                      "~/Scripts/adminlte.min.js"));
         }
     }
 }
