@@ -1,0 +1,5 @@
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\BO\bin\Debug\BO.dll
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\BO\bin\Debug\BO.pdb
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\BO\obj\Debug\BO.csprojResolveAssemblyReference.cache
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\BO\obj\Debug\BO.dll
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\BO\obj\Debug\BO.pdb

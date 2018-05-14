@@ -1,0 +1,12 @@
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\bin\Debug\DAL.dll.config
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\bin\Debug\DAL.dll
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\bin\Debug\DAL.pdb
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\bin\Debug\EntityFramework.dll
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\bin\Debug\EntityFramework.SqlServer.dll
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\bin\Debug\EntityFramework.xml
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\bin\Debug\EntityFramework.SqlServer.xml
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\bin\Debug\fr\EntityFramework.resources.dll
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\bin\Debug\fr\EntityFramework.SqlServer.resources.dll
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\obj\Debug\DAL.dll
+c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\obj\Debug\DAL.pdb
