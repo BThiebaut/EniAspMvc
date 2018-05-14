@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using DAL.Interfaces;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -7,7 +8,7 @@ using System.Web;
 
 namespace EniProjetMvc.Models
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IAppDbContext
     {
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
