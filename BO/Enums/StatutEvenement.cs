@@ -9,7 +9,7 @@ namespace BO
     public enum StatutEvenement
     {
         A_VENIR,
-        EN_COUR,
+        EN_COURS,
         ANNULE,
         ARCHIVE
     }
