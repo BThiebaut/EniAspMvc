@@ -15,15 +15,6 @@ namespace EniProjetMvc.Controllers
 
         public ActionResult Index()
         {
-            var e = new Evenement();
-            e.Intitule = "abc";
-            e.HeureFermeture = new DateTime();
-            e.HeureOuverture = new DateTime();
-            e.Statut = StatutEvenement.EN_COUR;
-            e.DateDebut = new DateTime();
-            e.DateFin = new DateTime();
-            var repo = DAOFactory<Evenement>.GetRepository<Evenement>(db);
-            repo.insert(e);
             return View();
         }
 
