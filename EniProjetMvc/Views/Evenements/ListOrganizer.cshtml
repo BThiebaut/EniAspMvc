@@ -1,0 +1,33 @@
+﻿@model IEnumerable<BO.Evenement>
+@using BO
+@{
+    ViewBag.Title = "ListOrganizer";
+}
+
+<div id="ListEventOrganizer">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-3">
+                <div class="small-box" style="background-image:url(@(item.Images.First().Url)); background-size: cover;">
+                    <p>@item.Statut</p>
+                    <p style="padding-top:120px;"></p>
+                    <h4>@item.Intitule</h4>
+                    <p class="small-box-footer">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </p>
+                </div>
+            </div>
+                
+
+
+        }
+    </div>
+   
+
+</div>
+
+
+

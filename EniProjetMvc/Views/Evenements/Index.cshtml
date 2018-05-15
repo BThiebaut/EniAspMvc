@@ -9,67 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Intitule)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateDebut)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateFin)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Duree)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HeureOuverture)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HeureFermeture)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Adresse)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Statut)
-        </th>
-        <th></th>
-    </tr>
+<p>
+    @RenderPage("~/Views/Evenements/ListOrganizer.cshtml", Model)
+</p>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Intitule)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateDebut)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateFin)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Duree)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HeureOuverture)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HeureFermeture)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Adresse)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Statut)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
