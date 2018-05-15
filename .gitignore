@@ -1,9 +1,6 @@
 /.vs
-
 EniProjetMvc/bin
-
 EniProjetMvc/obj/Debug
-
 DAL/bin
 DAL/obj/Debug
 BO/bin
