@@ -31,6 +31,7 @@ namespace EniProjetMvc
                       "~/Content/morris.css",
                       "~/Content/bootstrap-datepicker.min.css",
                       "~/Content/ckeditor.css",
+                      "~/Content/bootstrap-clockpicker.min.css",
                       "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/adminlte").Include(
@@ -38,7 +39,10 @@ namespace EniProjetMvc
                        "~/Scripts/jquery.knob.min.js",
                        "~/Scripts/moment.min.js",
                        "~/Scripts/bootstrap-datepicker.min.js",
-                      "~/Scripts/adminlte.min.js"));
+                      "~/Scripts/adminlte.min.js",
+                      "~/Scripts/bootstrap-clockpicker.min.js",
+                      "~/Scripts/custom.js"
+                      ));
         }
     }
 }
