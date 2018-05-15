@@ -12,13 +12,13 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body class="hold-transition skin-black">
-    <div class="wrapper">
+    <div class="wrapper" id="wrapped-content">
 
         <header class="main-header">
             <!-- Logo -->
             <a href="@Url.Action("Index", "Home")" class="logo">
                 <span class="logo-mini"><b>E</b>MVC</span>
-                <span class="logo-lg"><b>Evènement</b>TP</span>
+                <span class="logo-lg"><b>Evenement</b>TP</span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top">
@@ -51,19 +51,22 @@
             <!-- /.content -->
         
         <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                <b>Version</b> 2.4.0
-            </div>
-            <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
-            reserved.
-        </footer>
+        @if ( ViewBag.hideFooter == null )
+        {
+            <footer class="main-footer">
+                <div class="pull-right hidden-xs">
+                    <b>Version</b> 0.0.1
+                </div>
+                <strong>TP MVC Evenement.</strong>
+            </footer>
+        }
 
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/adminlte")
     @RenderSection("scripts", required: false)
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 
 </html>
