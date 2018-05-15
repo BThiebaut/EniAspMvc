@@ -1,5 +1,10 @@
 /.vs
+
 EniProjetMvc/bin
+
 EniProjetMvc/obj/Debug
-DAL/bin/Debug
-BO/bin/Debug
+
+DAL/bin
+DAL/obj/Debug
+BO/bin
+BO/obj/Debug
