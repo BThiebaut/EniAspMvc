@@ -3,3 +3,10 @@ c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\BO\bin
 c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\BO\obj\Debug\BO.csprojResolveAssemblyReference.cache
 c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\BO\obj\Debug\BO.dll
 c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\BO\obj\Debug\BO.pdb
+C:\Users\bthiebaut2016\documents\visual studio 2015\Projects\EniProjetMvc\BO\bin\Debug\BO.dll.config
+C:\Users\bthiebaut2016\documents\visual studio 2015\Projects\EniProjetMvc\BO\bin\Debug\EntityFramework.dll
+C:\Users\bthiebaut2016\documents\visual studio 2015\Projects\EniProjetMvc\BO\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\bthiebaut2016\documents\visual studio 2015\Projects\EniProjetMvc\BO\bin\Debug\EntityFramework.xml
+C:\Users\bthiebaut2016\documents\visual studio 2015\Projects\EniProjetMvc\BO\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\bthiebaut2016\documents\visual studio 2015\Projects\EniProjetMvc\BO\bin\Debug\fr\EntityFramework.resources.dll
+C:\Users\bthiebaut2016\documents\visual studio 2015\Projects\EniProjetMvc\BO\bin\Debug\fr\EntityFramework.SqlServer.resources.dll

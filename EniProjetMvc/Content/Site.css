@@ -1,6 +1,6 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    margin: 0;
+    padding : 0;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,4 +21,19 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.main-footer {
+    margin-left: 0px;
+    width: 100%;
+}
+
+
+.skin-black .wrapper {
+    background-color: #EEEEEE;
+}
+
+.skin-black .content-header{
+    background-color: rgba(255,255,255,0.8);
+    padding: 10px;
 }

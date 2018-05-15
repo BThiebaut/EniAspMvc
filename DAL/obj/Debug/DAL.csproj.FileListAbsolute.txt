@@ -10,3 +10,5 @@ c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\bi
 c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
 c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\obj\Debug\DAL.dll
 c:\Users\bthiebaut2016\Documents\Visual Studio 2015\Projects\EniProjetMvc\DAL\obj\Debug\DAL.pdb
+C:\Users\bthiebaut2016\documents\visual studio 2015\Projects\EniProjetMvc\DAL\bin\Debug\BO.dll
+C:\Users\bthiebaut2016\documents\visual studio 2015\Projects\EniProjetMvc\DAL\bin\Debug\BO.pdb

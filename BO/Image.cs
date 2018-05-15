@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace BO
 {
-    public class Image : IIdentifiable
+    public class Image : AbsEntity<Image>
     {
-        public int Id { get; set; }
         public Evenement Evenement { get; set; }
         public string Url { get; set; }
     }

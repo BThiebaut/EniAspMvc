@@ -1,13 +1,15 @@
-﻿using DAL.Interfaces;
+﻿using BO.Interfaces;
+using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DAL
 {
-    public abstract class AbsDAO<T>
+    public abstract class AbsDAO<T> where T : IIdentifiable
     {
         public IAppDbContext dbContext;
 
@@ -21,5 +23,6 @@ namespace DAL
         public abstract T insert(T obj);
         public abstract bool update(T obj);
         public abstract bool delete(T obj);
+        
     }
 }

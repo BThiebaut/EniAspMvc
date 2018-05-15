@@ -9,5 +9,7 @@ namespace BO.Interfaces
     public interface IIdentifiable
     {
         int Id { get; set; }
+
+        void duplicate<T>(T obj);
     }
 }

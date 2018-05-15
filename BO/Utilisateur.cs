@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace BO
 {
-    public class Utilisateur : IIdentifiable
+    public class Utilisateur : AbsEntity<Utilisateur>
     {
-        public int Id { get; set; }
         public string Adresse { get; set; }
     }
 }

@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace BO
 {
-    public class Theme : IIdentifiable
+    public class Theme : AbsEntity<Theme>
     {
-        public int Id { get; set; }
         public string Libelle { get; set; }
         public string Description { get; set; }
     }

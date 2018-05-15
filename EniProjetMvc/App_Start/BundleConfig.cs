@@ -26,9 +26,18 @@ namespace EniProjetMvc
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/AdminLTE.min.css",
+                      "~/Content/font-awesome.min.css",
+                      "~/Content/_all-skins.min.css",
+                      "~/Content/morris.css",
+                      "~/Content/bootstrap-datepicker.min.css",
+                      "~/Content/ckeditor.css",
                       "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/adminlte").Include(
+                       "~/Scripts/jquery-ui.min.js",
+                       "~/Scripts/jquery.knob.min.js",
+                       "~/Scripts/moment.min.js",
+                       "~/Scripts/bootstrap-datepicker.min.js",
                       "~/Scripts/adminlte.min.js"));
         }
     }
