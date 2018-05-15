@@ -5,5 +5,3 @@ DAL/bin
 DAL/obj/Debug
 BO/bin
 BO/obj/Debug
-*.csproj
-*.csproj.user
