@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EniProjetMvc.Models;
+using BO;
+using DAL;
 
 namespace EniProjetMvc.Controllers
 {
@@ -58,6 +60,7 @@ namespace EniProjetMvc.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+            ViewBag.hideFooter = true;
             return View();
         }
 
@@ -139,6 +142,7 @@ namespace EniProjetMvc.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.hideFooter = true;
             return View();
         }
 
@@ -151,7 +155,10 @@ namespace EniProjetMvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var utilisateur = new Utilisateur();
+                utilisateur.Adresse = model.Adresse;
+                
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Utilisateur = utilisateur };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

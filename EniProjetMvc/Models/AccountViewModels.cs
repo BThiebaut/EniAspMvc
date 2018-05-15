@@ -79,6 +79,10 @@ namespace EniProjetMvc.Models
         [Display(Name = "Confirmer le mot de passe ")]
         [Compare("Password", ErrorMessage = "Le mot de passe et le mot de passe de confirmation ne correspondent pas.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Adresse de départ ")]
+        public string Adresse { get; set; }
     }
 
     public class ResetPasswordViewModel

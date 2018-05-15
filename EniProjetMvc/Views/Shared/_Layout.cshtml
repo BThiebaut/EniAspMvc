@@ -67,6 +67,15 @@
     @Scripts.Render("~/bundles/adminlte")
     @RenderSection("scripts", required: false)
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.datepicker').datepicker();
+            $('.timepicker').clockpicker({
+                donetext: 'Ok',
+                autoclose: true,
+            });
+        });
+    </script>
 </body>
 
 </html>

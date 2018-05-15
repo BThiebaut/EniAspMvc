@@ -19,12 +19,8 @@ namespace BO
         [Column(TypeName = "datetime2")]
         public DateTime DateFin { get; set; }
         public int Duree { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime HeureOuverture { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime HeureFermeture { get; set; }
+        public string HeureOuverture { get; set; }
+        public string HeureFermeture { get; set; }
         public List<Image> Images { get; set; }
         public Theme Theme { get; set; }
         public string Adresse { get; set; }

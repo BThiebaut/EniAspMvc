@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using BO;
 using EniProjetMvc.Models;
+using DAL;
 
 namespace EniProjetMvc.Controllers
 {
@@ -25,11 +26,11 @@ namespace EniProjetMvc.Controllers
                 Id = 1,
                 DateDebut = new DateTime(),
                 DateFin = new DateTime(),
-                HeureFermeture = new DateTime(),
-                HeureOuverture = new DateTime(),
+                HeureFermeture = "",
+                HeureOuverture = "",
                 Intitule = "L'attaque des martiens",
                 Adresse = "le Monde",
-                Statut = StatutEvenement.EN_COUR
+                Statut = StatutEvenement.EN_COURS
             };
 
             List<Image> images1 = new List<Image> {
@@ -42,8 +43,8 @@ namespace EniProjetMvc.Controllers
                 Id = 2,
                 DateDebut = new DateTime(),
                 DateFin = new DateTime(),
-                HeureFermeture = new DateTime(),
-                HeureOuverture = new DateTime(),
+                HeureFermeture = "",
+                HeureOuverture = "",
                 Intitule = "La sortie de Half-Life 3",
                 Adresse = "???",
                 Statut = StatutEvenement.A_VENIR
@@ -60,11 +61,11 @@ namespace EniProjetMvc.Controllers
                 Id = 3,
                 DateDebut = new DateTime(),
                 DateFin = new DateTime(),
-                HeureFermeture = new DateTime(),
-                HeureOuverture = new DateTime(),
+                HeureFermeture = "",
+                HeureOuverture = "",
                 Intitule = "Phillipe !",
                 Adresse = "la ou il se cache",
-                Statut = StatutEvenement.EN_COUR
+                Statut = StatutEvenement.EN_COURS
             };
 
             List<Image> images3 = new List<Image> {
@@ -77,8 +78,8 @@ namespace EniProjetMvc.Controllers
                 Id = 4,
                 DateDebut = new DateTime(),
                 DateFin = new DateTime(),
-                HeureFermeture = new DateTime(),
-                HeureOuverture = new DateTime(),
+                HeureFermeture = "",
+                HeureOuverture = "",
                 Intitule = "La mort de Kenny",
                 Adresse = "Le parc du sud",
                 Statut = StatutEvenement.A_VENIR
@@ -94,8 +95,8 @@ namespace EniProjetMvc.Controllers
                 Id = 5,
                 DateDebut = new DateTime(),
                 DateFin = new DateTime(),
-                HeureFermeture = new DateTime(),
-                HeureOuverture = new DateTime(),
+                HeureFermeture = "",
+                HeureOuverture = "",
                 Intitule = "Une journée normale d'un joueur de League of légend",
                 Adresse = "n'importe ou",
                 Statut = StatutEvenement.A_VENIR
@@ -131,7 +132,8 @@ namespace EniProjetMvc.Controllers
         // GET: Evenements/Create
         public ActionResult Create()
         {
-            return View();
+            var vm = new EvenementVM(db);
+            return View(vm);
         }
 
         // POST: Evenements/Create
@@ -139,16 +141,20 @@ namespace EniProjetMvc.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Intitule,DateDebut,DateFin,Duree,HeureOuverture,HeureFermeture,Adresse,Statut")] Evenement evenement)
+        public ActionResult Create(EvenementVM vm)
         {
             if (ModelState.IsValid)
             {
-                db.Evenements.Add(evenement);
-                db.SaveChanges();
+                if (vm.selectedTheme.HasValue)
+                {
+                    var theme = DAOFactory<Theme>.GetRepository<Theme>(db).getById(vm.selectedTheme.Value);
+                    vm.Evenement.Theme = theme;
+                }
+                DAOFactory<Evenement>.GetRepository<Evenement>(db).insert(vm.Evenement);
                 return RedirectToAction("Index");
             }
 
-            return View(evenement);
+            return Create();
         }
 
         // GET: Evenements/Edit/5
@@ -206,6 +212,15 @@ namespace EniProjetMvc.Controllers
             db.Evenements.Remove(evenement);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public JsonResult AjaxListe(string term = null, int? statut = null)
+        {
+            var liste = DAOFactory<Evenement>.GetRepository<Evenement>(db).listAll();
+            var view = View("ListOrganizer", liste);
+            var res = new { Html = view };
+            return Json(res);
         }
 
         protected override void Dispose(bool disposing)
