@@ -18,7 +18,7 @@ namespace EniProjetMvc.Models
 
         public EvenementVM(IAppDbContext db)
         {
-            Themes = DAOFactory<Theme>.GetRepository<Theme>(db).listAll();
+            Themes = DAOFactory.GetRepository<Theme>(db).listAll();
         }
 
         public EvenementVM()

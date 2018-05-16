@@ -9,6 +9,8 @@ namespace DAL
 {
     public class UtilisateurDAO : AbsDAO<Utilisateur>
     {
+        public static new UtilisateurDAO Instance => new UtilisateurDAO();
+
         public UtilisateurDAO()
         {
         }

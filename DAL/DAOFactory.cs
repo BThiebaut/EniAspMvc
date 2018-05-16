@@ -8,16 +8,14 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    public class DAOFactory<T>
+    public class DAOFactory
     {
         public static AbsDAO<T> GetRepository<T>(IAppDbContext dbContext) where T : IIdentifiable
         {
             var strName = "DAL." + typeof(T).Name + "DAO";
             try
             {
-                var assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-                var wrappedInstance = Activator.CreateInstance(assemblyName, strName);
-                var inst = wrappedInstance.Unwrap() as AbsDAO<T>;
+                var inst = Type.GetType(strName).GetProperty("Instance").GetValue(null, null) as AbsDAO<T>;
                 inst.SetDbContext(dbContext);
                 return inst;
             }catch(Exception e)

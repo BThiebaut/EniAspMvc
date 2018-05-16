@@ -1,5 +1,9 @@
 namespace EniProjetMvc.Migrations
 {
+    using BO;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -25,7 +29,13 @@ namespace EniProjetMvc.Migrations
             //      new Person { FullName = "Brice Lambson" },
             //      new Person { FullName = "Rowan Miller" }
             //    );
-            //
+
+            var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            RoleManager.Create(new IdentityRole("admin"));
+            RoleManager.Create(new IdentityRole("organizer"));
+            RoleManager.Create(new IdentityRole("convive"));
+            
+
         }
     }
 }
