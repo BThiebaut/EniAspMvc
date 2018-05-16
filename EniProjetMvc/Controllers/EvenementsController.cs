@@ -20,98 +20,7 @@ namespace EniProjetMvc.Controllers
         // GET: Evenements
         public ActionResult Index()
         {
-
-           
-
-            Evenement e1 = new Evenement {
-                Id = 1,
-                DateDebut = new DateTime(),
-                DateFin = new DateTime(),
-                HeureFermeture = "",
-                HeureOuverture = "",
-                Intitule = "L'attaque des martiens",
-                Adresse = "le Monde",
-                Statut = StatutEvenement.EN_COURS
-            };
-
-            List<Image> images1 = new List<Image> {
-                new Image { Id = 1, Evenement = e1, Url = "http://planete-cine.com/wp-content/uploads/2016/04/mars-attacks.jpg"},
-            };
-            e1.Images = images1;
-
-            Evenement e2 = new Evenement
-            {
-                Id = 2,
-                DateDebut = new DateTime(),
-                DateFin = new DateTime(),
-                HeureFermeture = "",
-                HeureOuverture = "",
-                Intitule = "La sortie de Half-Life 3",
-                Adresse = "???",
-                Statut = StatutEvenement.A_VENIR
-            };
-
-            List<Image> images2 = new List<Image> {
-                new Image { Id = 2, Evenement = e2, Url = "http://static.papergeek.fr/2016/08/half-life-3-logo-720x450.jpg" },
-                new Image {Id = 3, Evenement = e2, Url = "https://cdn.drawception.com/images/panels/2014/8-3/8AXwxdYLEn-4.png" }
-            };
-            e2.Images = images2;
-
-            Evenement e3 = new Evenement
-            {
-                Id = 3,
-                DateDebut = new DateTime(),
-                DateFin = new DateTime(),
-                HeureFermeture = "",
-                HeureOuverture = "",
-                Intitule = "Phillipe !",
-                Adresse = "la ou il se cache",
-                Statut = StatutEvenement.EN_COURS
-            };
-
-            List<Image> images3 = new List<Image> {
-                new Image { Id = 4, Evenement = e1, Url = "https://i.ytimg.com/vi/EOxUWLl2HFs/hqdefault.jpg"},
-            };
-            e3.Images = images3;
-
-            Evenement e4 = new Evenement
-            {
-                Id = 4,
-                DateDebut = new DateTime(),
-                DateFin = new DateTime(),
-                HeureFermeture = "",
-                HeureOuverture = "",
-                Intitule = "La mort de Kenny",
-                Adresse = "Le parc du sud",
-                Statut = StatutEvenement.A_VENIR
-            };
-
-            List<Image> images4 = new List<Image> {
-                new Image { Id = 5, Evenement = e1, Url = "https://vignette.wikia.nocookie.net/southpark/images/4/42/Proper_condom_use_kenny%27s_death.jpg/revision/latest?cb=20100327195536"},
-            };
-            e4.Images = images4;
-
-            Evenement e5 = new Evenement
-            {
-                Id = 5,
-                DateDebut = new DateTime(),
-                DateFin = new DateTime(),
-                HeureFermeture = "",
-                HeureOuverture = "",
-                Intitule = "Une journée normale d'un joueur de League of légend",
-                Adresse = "n'importe ou",
-                Statut = StatutEvenement.A_VENIR
-            };
-
-            List<Image> images5 = new List<Image> {
-                new Image { Id = 6, Evenement = e1, Url = "http://www2.mes-coloriages-preferes.biz/colorino/Images/Large/Personnages-celebres-Troll-face-Rage-Guy-134663.png"},
-            };
-            e5.Images = images5;
-
-
-
-            List<Evenement> list = new List<Evenement> { e1, e2, e3, e4, e5};
-
+            List<Evenement> list = DAOFactory<Evenement>.GetRepository<Evenement>(db).listAll();
             return View(list);
         }
 
@@ -221,9 +130,9 @@ namespace EniProjetMvc.Controllers
             var list = DAOFactory<Evenement>.GetRepository<Evenement>(db).listAll();
             ViewBag.modeAjax = true;
             //var view = View("ListOrganizer", liste);
-            var view = ViewRenderer.RenderView("~/views/Evenements/ListOrganizer.csthml", list, ControllerContext);
+            var view = ViewRenderer.RenderPartialView("~/Views/Evenements/ListOrganizer.cshtml", list, ControllerContext);
             var res = new { Html = view };
-            return Json(res);
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -231,9 +140,9 @@ namespace EniProjetMvc.Controllers
         {
             var evenement = DAOFactory<Evenement>.GetRepository<Evenement>(db).getById(id);
             ViewBag.modeAjax = true;
-            var view = ViewRenderer.RenderView("~/views/Evenements/Details.csthml", evenement, ControllerContext);
+            var view = ViewRenderer.RenderPartialView("~/Views/Evenements/Details.cshtml", evenement, ControllerContext);
             var res = new { Html = view };
-            return Json(res);
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

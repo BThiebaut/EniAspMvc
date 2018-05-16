@@ -5,12 +5,16 @@
     ViewBag.Title = "ListOrganizer";
 }
 
+
+
+
 <div id="ListEventOrganizer">
     <div class="row">
         @foreach (var item in Model)
         {
             <div class="col-lg-3">
-                <div class="small-box" style="background-image:url(@(item.Images.First().Url)); background-size: cover;">
+               @{string firstImageLink = item.Images != null && item.Images.Count() > 0 ? item.Images.First().Url : "DefaultImage"; }
+                <div class="small-box" style="background-image:url(@(firstImageLink)); background-size: cover;">
                     <p>
                         
                         @if(item.Statut == StatutEvenement.EN_COURS){

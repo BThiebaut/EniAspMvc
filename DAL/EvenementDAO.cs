@@ -35,7 +35,7 @@ namespace DAL
 
         public override Evenement getById(int id)
         {
-            return dbContext.Evenements.Find(id);
+            return dbContext.Evenements.SingleOrDefault(e => e.Id == id);
         }
 
         public override Evenement insert(Evenement obj)
