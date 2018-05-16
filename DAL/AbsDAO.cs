@@ -23,6 +23,10 @@ namespace DAL
         public abstract T insert(T obj);
         public abstract bool update(T obj);
         public abstract bool delete(T obj);
-        
+        public virtual bool cancel(T obj)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

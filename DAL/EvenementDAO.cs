@@ -65,5 +65,15 @@ namespace DAL
             }
             return isOk;
         }
+
+        public override bool cancel(Evenement obj)
+        {
+            if (obj.Statut != StatutEvenement.ARCHIVE)
+            {
+                obj.Statut = StatutEvenement.ANNULE;
+            }
+            return this.update(obj);
+        }
+
     }
 }
