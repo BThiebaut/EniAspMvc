@@ -55,5 +55,18 @@
         });
     }
 
+    function detailEvent(id) {
+        $.ajax({
+            url: '@Url.Action("Evenements","AjaxDetails")' + '/' + id,
+            type: 'GET',
+            dataType: 'json'
+        }).done(function (response) {
+            console.log(response);
+
+        }).fail(function (response) {
+            console.log(response);
+        });
+    }
+
 </script>
 

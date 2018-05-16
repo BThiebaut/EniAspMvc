@@ -31,7 +31,7 @@
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                        <!-- @Html.ActionLink("Details", "Details", new { id = item.Id }) | --> 
                        <!-- @Html.ActionLink("Delete", "Delete", new { id = item.Id }) -->
-                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#detailModal">Détails</button>
+                        <button type="button" class="btn btn-info btn-lg" onclick="detailEvent(@item.Id)" data-toggle="modal" data-target="#detailModal">Détails</button>
                         <button type="button" class="btn btn-danger btn-lg" onclick="deleteEvent(@item.Id)">Annuler</button>
                     </p>
                 </div>
