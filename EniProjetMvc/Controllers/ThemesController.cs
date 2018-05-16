@@ -117,13 +117,13 @@ namespace EniProjetMvc.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        [HttpPost]
         public JsonResult AjaxQuickCreate(string libelle)
         {
             var theme = new Theme { Libelle = libelle };
             theme = DAOFactory.GetRepository<Theme>(db).insert(theme);
             var res = new { list = DAOFactory.GetRepository<Theme>(db).listAll() };
-            return Json(res, JsonRequestBehavior.AllowGet);
+            return Json(res);
         }
 
         protected override void Dispose(bool disposing)
