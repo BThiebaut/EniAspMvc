@@ -39,7 +39,6 @@ namespace EniProjetMvc.Extensions
             sb.Append(html.LabelFor(expression, htmlAttributes: new { @class = "control-label col-md-2" }));
             sb.Append(colMd10);
             sb.Append(html.EditorFor(expression, new { htmlAttributes = new { @class = "form-control datepicker" } }));
-            sb.Append(html.ValidationMessageFor(expression, "", new { @class = "text-danger" }));
             sb.Append(endDiv);
             sb.Append(endDiv);
 

@@ -11,6 +11,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
 </head>
 <body class="hold-transition skin-black">
     <div class="wrapper" id="wrapped-content">
@@ -67,7 +68,7 @@
     <script type="text/javascript">
         $(function () {
             $('.datepicker').datepicker({
-                format: 'dd/mm/yyyy'
+                format: 'mm/dd/yyyy'
             });
             $('.timepicker').clockpicker({
                 donetext: 'Ok',

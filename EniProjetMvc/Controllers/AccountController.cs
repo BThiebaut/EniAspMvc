@@ -12,7 +12,8 @@ using EniProjetMvc.Models;
 using BO;
 using DAL;
 
-namespace EniProjetMvc.Controllers
+namespace EniProjetMvc
+    .Controllers
 {
     [Authorize]
     public class AccountController : Controller

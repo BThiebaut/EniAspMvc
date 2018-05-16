@@ -9,6 +9,7 @@ namespace DAL
 {
     public class ImageDAO : AbsDAO<Image>
     {
+        public static new ImageDAO Instance => new ImageDAO();
         public ImageDAO()
         {
         }

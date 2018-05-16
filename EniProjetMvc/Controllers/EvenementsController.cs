@@ -20,7 +20,7 @@ namespace EniProjetMvc.Controllers
         // GET: Evenements
         public ActionResult Index()
         {
-            List<Evenement> list = DAOFactory<Evenement>.GetRepository<Evenement>(db).listAll();
+            List<Evenement> list = DAOFactory.GetRepository<Evenement>(db).listAll();
             return View(list);
         }
 
@@ -57,10 +57,10 @@ namespace EniProjetMvc.Controllers
             {
                 if (vm.selectedTheme.HasValue)
                 {
-                    var theme = DAOFactory<Theme>.GetRepository<Theme>(db).getById(vm.selectedTheme.Value);
+                    var theme = DAOFactory.GetRepository<Theme>(db).getById(vm.selectedTheme.Value);
                     vm.Evenement.Theme = theme;
                 }
-                DAOFactory<Evenement>.GetRepository<Evenement>(db).insert(vm.Evenement);
+                DAOFactory.GetRepository<Evenement>(db).insert(vm.Evenement);
                 return RedirectToAction("Index");
             }
 
@@ -127,7 +127,7 @@ namespace EniProjetMvc.Controllers
         [HttpGet]
         public JsonResult AjaxListe(string term = null, int? statut = null)
         {
-            var list = DAOFactory<Evenement>.GetRepository<Evenement>(db).listAll();
+            var list = DAOFactory.GetRepository<Evenement>(db).listAll();
             var view = ViewRenderer.RenderPartialView("~/Views/Evenements/ListOrganizer.cshtml", list, ControllerContext);
             var res = new { Html = view };
             return Json(res, JsonRequestBehavior.AllowGet);
@@ -136,7 +136,7 @@ namespace EniProjetMvc.Controllers
         [HttpGet]
         public JsonResult AjaxDetails(int id)
         {
-            var evenement = DAOFactory<Evenement>.GetRepository<Evenement>(db).getById(id);
+            var evenement = DAOFactory.GetRepository<Evenement>(db).getById(id);
             var view = ViewRenderer.RenderPartialView("~/Views/Evenements/Details.cshtml", evenement, ControllerContext);
             var res = new { Html = view, Adresse = evenement.Adresse };
             return Json(res, JsonRequestBehavior.AllowGet);
@@ -145,8 +145,8 @@ namespace EniProjetMvc.Controllers
         [HttpGet]
         public JsonResult AjaxDelete(int id)
         {
-            var evenement = DAOFactory<Evenement>.GetRepository<Evenement>(db).getById(id);
-            var isDeleted = DAOFactory<Evenement>.GetRepository<Evenement>(db).cancel(evenement);
+            var evenement = DAOFactory.GetRepository<Evenement>(db).getById(id);
+            var isDeleted = DAOFactory.GetRepository<Evenement>(db).cancel(evenement);
             var res = new { error = !isDeleted };
             return Json(res, JsonRequestBehavior.AllowGet);
         }

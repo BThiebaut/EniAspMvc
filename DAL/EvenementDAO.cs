@@ -11,6 +11,7 @@ namespace DAL
 {
     public class EvenementDAO : AbsDAO<Evenement>
     {
+        public static new EvenementDAO Instance => new EvenementDAO();
 
         public EvenementDAO()
         {
@@ -47,7 +48,7 @@ namespace DAL
 
         public override List<Evenement> listAll()
         {
-            return dbContext.Evenements.ToList();
+            return dbContext.Evenements.OrderBy(e => e.Statut).ToList();
         }
 
         public override bool update(Evenement obj)

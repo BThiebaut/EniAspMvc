@@ -9,6 +9,7 @@ namespace DAL
 {
     public class ThemeDAO : AbsDAO<Theme>
     {
+        public static new ThemeDAO Instance => new ThemeDAO();
         public ThemeDAO()
         {
         }

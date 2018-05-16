@@ -12,6 +12,7 @@ namespace DAL
     public abstract class AbsDAO<T> where T : IIdentifiable
     {
         public IAppDbContext dbContext;
+        public static AbsDAO<T> Instance;
 
         public void SetDbContext(IAppDbContext dbContext)
         {
