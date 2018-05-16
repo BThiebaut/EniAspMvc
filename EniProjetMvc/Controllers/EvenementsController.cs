@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using BO;
 using EniProjetMvc.Models;
 using DAL;
+using EniProjetMvc.Extensions;
 
 namespace EniProjetMvc.Controllers
 {
@@ -217,8 +218,20 @@ namespace EniProjetMvc.Controllers
         [HttpGet]
         public JsonResult AjaxListe(string term = null, int? statut = null)
         {
-            var liste = DAOFactory<Evenement>.GetRepository<Evenement>(db).listAll();
-            var view = View("ListOrganizer", liste);
+            var list = DAOFactory<Evenement>.GetRepository<Evenement>(db).listAll();
+            ViewBag.modeAjax = true;
+            //var view = View("ListOrganizer", liste);
+            var view = ViewRenderer.RenderView("~/views/Evenements/ListOrganizer.csthml", list, ControllerContext);
+            var res = new { Html = view };
+            return Json(res);
+        }
+
+        [HttpGet]
+        public JsonResult AjaxDetails(int id)
+        {
+            var evenement = DAOFactory<Evenement>.GetRepository<Evenement>(db).getById(id);
+            ViewBag.modeAjax = true;
+            var view = ViewRenderer.RenderView("~/views/Evenements/Details.csthml", evenement, ControllerContext);
             var res = new { Html = view };
             return Json(res);
         }

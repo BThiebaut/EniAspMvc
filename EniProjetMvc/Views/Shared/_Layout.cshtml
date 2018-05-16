@@ -1,48 +1,56 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Evenement MVC</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+﻿@if (ViewBag.modeAjax == null)
+{
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Evenement MVC</title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-</head>
-<body class="hold-transition skin-black">
-    <div class="wrapper" id="wrapped-content">
-
-        <header class="main-header">
-            <!-- Logo -->
-            <a href="@Url.Action("Index", "Home")" class="logo">
-                <span class="logo-mini"><b>E</b>MVC</span>
-                <span class="logo-lg"><b>Evenement</b>TP</span>
-            </a>
-            <!-- Header Navbar: style can be found in header.less -->
-            <nav class="navbar navbar-static-top">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
-                    <li>@Html.ActionLink("À propos de", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </nav>
-        </header>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body class="hold-transition skin-black">
+        <div class="wrapper" id="wrapped-content">
+}
+        @if (ViewBag.modeAjax == null)
+        {
+            <header class="main-header">
+                <!-- Logo -->
+                <a href="@Url.Action("Index", "Home")" class="logo">
+                    <span class="logo-mini"><b>E</b>MVC</span>
+                    <span class="logo-lg"><b>Evenement</b>TP</span>
+                </a>
+                <!-- Header Navbar: style can be found in header.less -->
+                <nav class="navbar navbar-static-top">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
+                        <li>@Html.ActionLink("À propos de", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </nav>
+            </header>
+        }
 
         <!-- Content Wrapper. Contains page content -->
         
             <!-- Content Header (Page header) -->
-            <section class="content-header">
-                <h1>
-                    @ViewBag.Title
-                </h1>
-                <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li class="active">TODO</li>
-                </ol>
-            </section>
+            @if (ViewBag.modeAjax == null)
+            {
+                <section class="content-header">
+                    <h1>
+                        @ViewBag.Title
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li class="active">TODO</li>
+                    </ol>
+                </section>
+            }
 
             <!-- Main content -->
             <section class="content">
@@ -51,7 +59,7 @@
             <!-- /.content -->
         
         <!-- /.content-wrapper -->
-        @if ( ViewBag.hideFooter == null )
+        @if ( ViewBag.hideFooter == null && ViewBag.modeAjax == null)
         {
             <footer class="main-footer">
                 <div class="pull-right hidden-xs">
@@ -60,22 +68,24 @@
                 <strong>TP MVC Evenement.</strong>
             </footer>
         }
-
-    </div>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/adminlte")
-    @RenderSection("scripts", required: false)
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('.datepicker').datepicker();
-            $('.timepicker').clockpicker({
-                donetext: 'Ok',
-                autoclose: true,
+    
+    @if (ViewBag.modeAjax == null)
+    {
+        </div>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/adminlte")
+        @RenderSection("scripts", required: false)
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                $('.datepicker').datepicker();
+                $('.timepicker').clockpicker({
+                    donetext: 'Ok',
+                    autoclose: true,
+                });
             });
-        });
-    </script>
-</body>
-
-</html>
+        </script>
+        </body>
+        </html>
+    }
