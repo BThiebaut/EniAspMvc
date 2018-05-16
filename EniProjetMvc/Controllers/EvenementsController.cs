@@ -40,6 +40,7 @@ namespace EniProjetMvc.Controllers
         }
 
         // GET: Evenements/Create
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             var vm = new EvenementVM(db);
@@ -51,6 +52,7 @@ namespace EniProjetMvc.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public ActionResult Create(EvenementVM vm)
         {
             if (vm.Evenement.Intitule != "")
@@ -68,6 +70,7 @@ namespace EniProjetMvc.Controllers
         }
 
         // GET: Evenements/Edit/5
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -79,7 +82,11 @@ namespace EniProjetMvc.Controllers
             {
                 return HttpNotFound();
             }
-            return View(evenement);
+            var vm = new EvenementVM(db);
+            vm.Evenement = evenement;
+            vm.selectedTheme = evenement.Theme.Id;
+            
+            return View("Create",vm);
         }
 
         // POST: Evenements/Edit/5
@@ -87,18 +94,20 @@ namespace EniProjetMvc.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Intitule,DateDebut,DateFin,Duree,HeureOuverture,HeureFermeture,Adresse,Statut")] Evenement evenement)
+        [Authorize(Roles = "admin")]
+        public ActionResult Edit(EvenementVM vm)
         {
-            if (ModelState.IsValid)
+            if (vm.selectedTheme.HasValue)
             {
-                db.Entry(evenement).State = EntityState.Modified;
-                db.SaveChanges();
+                vm.Evenement.Theme = DAOFactory.GetRepository<Theme>(db).getById(vm.selectedTheme.Value);
+                DAOFactory.GetRepository<Evenement>(db).update(vm.Evenement);
                 return RedirectToAction("Index");
             }
-            return View(evenement);
+            return Edit(vm.Evenement.Id);
         }
 
         // GET: Evenements/Delete/5
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -116,6 +125,7 @@ namespace EniProjetMvc.Controllers
         // POST: Evenements/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             Evenement evenement = db.Evenements.Find(id);
@@ -143,6 +153,7 @@ namespace EniProjetMvc.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public JsonResult AjaxDelete(int id)
         {
             var evenement = DAOFactory.GetRepository<Evenement>(db).getById(id);
