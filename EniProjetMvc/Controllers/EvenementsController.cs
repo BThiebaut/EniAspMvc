@@ -53,7 +53,7 @@ namespace EniProjetMvc.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(EvenementVM vm)
         {
-            if (ModelState.IsValid)
+            if (vm.Evenement.Intitule != "")
             {
                 if (vm.selectedTheme.HasValue)
                 {
