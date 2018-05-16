@@ -57,7 +57,7 @@
 
     function detailEvent(id) {
         $.ajax({
-            url: '@Url.Action("Evenements","AjaxDetails")' + '/' + id,
+            url: '@Url.Action("AjaxDetails", "Evenements")' + '/' + id,
             type: 'GET',
             dataType: 'json'
         }).done(function (response) {
