@@ -44,6 +44,12 @@ namespace EniProjetMvc
                       "~/Scripts/notify.min.js",
                       "~/Scripts/custom.js"
                       ));
+
+            bundles.Add(new ScriptBundle("~/bundles/fileupload").Include(
+                       "~/Scripts/jquery.ui.widget.js",
+                       "~/Scripts/jquery.iframe-transport.js",
+                       "~/Scripts/jquery.fileupload.js"
+                      ));
         }
     }
 }

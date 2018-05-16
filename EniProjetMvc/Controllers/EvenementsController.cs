@@ -162,6 +162,13 @@ namespace EniProjetMvc.Controllers
             return Json(res, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public JsonResult AjaxUploadImage(HttpFileCollection files)
+        {
+            return null;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
