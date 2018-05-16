@@ -41,6 +41,7 @@ namespace EniProjetMvc
                        "~/Scripts/bootstrap-datepicker.min.js",
                       "~/Scripts/adminlte.min.js",
                       "~/Scripts/bootstrap-clockpicker.min.js",
+                      "~/Scripts/notify.min.js",
                       "~/Scripts/custom.js"
                       ));
         }

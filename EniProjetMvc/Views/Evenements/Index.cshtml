@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<BO.Evenement>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Liste des événements";
 }
 
-<h2>Index</h2>
+<h2>Liste des événements</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a class="btn btn-sm btn-success" href="@Url.Action("Create", "Evenements")"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nouvel évenement</a>
 </p>
-<p>
-    @RenderPage("~/Views/Evenements/ListOrganizer.cshtml", Model)
+<p id="liste-evenements">
+  
 </p>
 
  <!-- Modal -->
@@ -21,10 +21,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+                <h4 class="modal-title">Détail de l'événement</h4>
             </div>
             <div class="modal-body">
-                <p>Some text in the modal.</p>
+               <div id="event-detail-modal"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -35,7 +35,23 @@
 </div>
 
 
-<script>
+<script type="text/javascript">
+
+    $(function () {
+        $.ajax({
+            url: '@Url.Action("AjaxListe", "Evenements")',
+            type: 'GET',
+            dataType: 'json',
+        }).done(function (response) {
+            $('#liste-evenements').html(response.Html);
+        }).fail(function (response) {
+            swal("Une erreur est survenue lors du rechargement de la page", {
+                icon: "error",
+            });
+            console.log(response);
+        });
+    });
+
     function deleteEvent(id){
         swal({
             title: "Confirmation",
@@ -46,24 +62,49 @@
         })
         .then((willDelete) => {
             if (willDelete) {
-                swal("Événement (pas) supprimé !", {
-                    icon: "success",
+                $.ajax({
+                    url: '@Url.Action("AjaxDelete", "Evenements")' + '/' + id,
+                    type: 'GET',
+                    dataType: 'json',
+                }).done(function (response) {
+                    if (!response.error) {
+                        $.ajax({
+                            url: '@Url.Action("AjaxListe", "Evenements")',
+                            type: 'GET',
+                            dataType: 'json',
+                        }).done(function (response) {
+                            $('#liste-evenements').html(response.Html);
+                            $.notify("Événement annulé", "success");
+                        }).fail(function (response) {
+                            $.notify("Une erreur est survenue lors du rechargement de la page", "error");
+                            console.log(response);
+                        });
+                    }
+                    else {
+                        $.notify("Une erreur est survenue lors de la suppression", "error");
+                        console.log(response);
+                    }
                 });
+               
+                
             } else {
-                swal("Annulation de l'annulation");
+                //ne rien faire
             }
         });
     }
 
     function detailEvent(id) {
+        $('#event-detail-modal').html('<i class="fa fa-cog fa-spin  fa-2x fa-fw"></i> chargement...');
         $.ajax({
             url: '@Url.Action("AjaxDetails", "Evenements")' + '/' + id,
             type: 'GET',
             dataType: 'json'
         }).done(function (response) {
-            console.log(response);
+            $('#event-detail-modal').html(response.Html);
+            
 
         }).fail(function (response) {
+            $('#event-detail-modal').html('<div class="alert alert-danger">Une erreur s\'est produite lors du chargement des données</div>');
             console.log(response);
         });
     }

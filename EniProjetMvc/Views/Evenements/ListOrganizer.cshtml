@@ -22,7 +22,19 @@
                             @EnumerationUtil.Instance.getLabelStatut(item.Statut)
                         </span>
                         }
-                        else{
+                        else if(item.Statut == StatutEvenement.ANNULE)
+                        {
+                            <span class="label label-warning">
+                                @EnumerationUtil.Instance.getLabelStatut(item.Statut)
+                            </span>
+                        }
+                        else if (item.Statut == StatutEvenement.ARCHIVE)
+                        {
+                            <span class="label label-default">
+                                @EnumerationUtil.Instance.getLabelStatut(item.Statut)
+                            </span>
+                        }
+                        else {
                         <span class="label label-info">
                             @EnumerationUtil.Instance.getLabelStatut(item.Statut)
                         </span>
@@ -32,11 +44,15 @@
                     <p style="padding-top:120px;"></p>
                     <h4>@item.Intitule</h4>
                     <p class="small-box-footer">
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                       <!-- @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |  --> 
                        <!-- @Html.ActionLink("Details", "Details", new { id = item.Id }) | --> 
                        <!-- @Html.ActionLink("Delete", "Delete", new { id = item.Id }) -->
-                        <button type="button" class="btn btn-info btn-lg" onclick="detailEvent(@item.Id)" data-toggle="modal" data-target="#detailModal">Détails</button>
-                        <button type="button" class="btn btn-danger btn-lg" onclick="deleteEvent(@item.Id)">Annuler</button>
+                        <button type="button" class="btn btn-sm btn-info" onclick="detailEvent(@item.Id)" data-toggle="modal" data-target="#detailModal"><i class="fa fa-eye" aria-hidden="true"></i> Détails</button>
+                         @if (item.Statut != StatutEvenement.ANNULE && item.Statut != StatutEvenement.ARCHIVE)
+                        {
+                            <a class="btn btn-sm btn-warning" href="@Url.Action("Edit", "Evenements")/@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i> Modifier</a>
+                            <button type="button" class="btn btn-sm btn-danger" onclick="deleteEvent(@item.Id)"><i class="fa fa-times" aria-hidden="true"></i> Annuler</button>
+                         }
                     </p>
                 </div>
             </div>

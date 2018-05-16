@@ -42,3 +42,8 @@ textarea {
     width: 95%;
     margin: 1% auto 7% auto;
 }
+
+/* style additionnel */
+h2{
+    text-align: center;
+}
