@@ -7,7 +7,7 @@
 
 <div class="box">
     <div class="box-header with-border">
-       @Html.DisplayFor(model => model.Intitule)
+       <h3>@Html.DisplayFor(model => model.Intitule)</h3>
     </div>
     <div class="box-body">
         <table class="table table-bordered">
@@ -46,22 +46,25 @@
 
     <div class="box">
         <div class="box-header with-border">
-            Parkings
+            <h3>Parkings</h3>
         </div>
         <div class="box-body">
             <div id="parking">
                 <div class="form-group">
                     <input class="form-control" id="adresse-utilisateur" type="text" placeholder="Adresse de départ" />
                 </div>
-                <div class="form-control">
-                    <button class="btn btn-sm btn-default">Rechercher</button>
-                </div>
-                <div class="row">
+
+                <button class="btn btn-sm btn-default">Rechercher</button>
+
+                <div class="row" id="list-parking" style="padding-top:15px">
                     @RenderPage("~/Views/Evenements/Parking.cshtml")
                     @RenderPage("~/Views/Evenements/Parking.cshtml")
                     @RenderPage("~/Views/Evenements/Parking.cshtml")
                 </div>
             </div>
+            <div id="google-map" style="height:500px">
+
+             </div>
         </div>
 
 

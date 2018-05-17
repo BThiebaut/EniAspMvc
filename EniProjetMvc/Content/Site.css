@@ -47,3 +47,11 @@ textarea {
 h2{
     text-align: center;
 }
+
+#list-parking{
+    padding-top:20px;
+}
+
+table.table td{
+    padding: 4px !important;
+}
