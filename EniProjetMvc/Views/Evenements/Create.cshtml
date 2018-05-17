@@ -6,7 +6,7 @@
     var mode = Model.Evenement == null;
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -67,6 +67,7 @@
 }
 <script type="text/javascript">
     var filesUploads = [];
+    var isSendFile = false;
     $(function () {
         $('.btn-quickTheme').on('click', function () {
             $('#quickTheme').removeClass('hidden');
@@ -96,11 +97,30 @@
 
         function renderAddedFiles() {
             var html = '';
+            
+
             $.each(filesUploads, function (index, data) {
-                html += '<li>'+ data.name +' <span class="remove-image" data-index="'+ index +'"><i class="fa fa-times"></i></span></li>';
+                html += '<li><img id="preview-'+ index +'"/> '+ data.name +' <span class="btn btn-sm btn-danger remove-image" data-index="'+ index +'"><i class="fa fa-times"></i></span></li>';
             });
 
             $('#fileList').html(html);
+
+            $.each(filesUploads, function (index, data) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview-' + index).attr('src', e.target.result);
+                }
+                reader.readAsDataURL(data);
+            });
+
+            $('.remove-image').off('click');
+            $('.remove-image').on('click', function () {
+                var index = $(this).data('index');
+                if (filesUploads[index]) {
+                    filesUploads.splice(index, 1);
+                }
+                renderAddedFiles();
+            });
         }
 
         $('#fileupload').fileupload({
@@ -109,12 +129,35 @@
                 filesUploads.push(file);
                 renderAddedFiles();
             }
-         
         });
 
         $('form').on('submit', function (e) {
-            e.preventDefault();
-            console.log(this);
+            if (!isSendFile) {
+                var form = $('form');
+                var formData = new FormData();
+                $.each(filesUploads, function (index, data) {
+                    formData.append("Images[]", data);
+                });
+                
+                e.preventDefault();
+                $.ajax({
+                    url: '@Url.Action("AjaxUploadImage", "Evenements")',
+                    method: 'post',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                }).done(function (response) {
+                    isSendFile = true;
+                    console.log(response)
+                    $.each(response.Images, function (index, data) {
+                        form.append('<input type="hidden" value="' + data.Id + '" name="Images[]">');
+                    });
+                    form.submit();
+                }).fail(function (response) {
+                    isSendFile = false;
+                    $.notify('Une erreur s\'est produite lors de l\'envois les images', 'warn');
+                });
+            }
         });
     });
 

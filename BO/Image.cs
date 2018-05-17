@@ -10,7 +10,6 @@ namespace BO
 {
     public class Image : AbsEntity<Image>
     {
-        [Required]
         public Evenement Evenement { get; set; }
 
         [Required]

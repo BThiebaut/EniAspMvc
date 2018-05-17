@@ -63,5 +63,12 @@ namespace DAL
             }
             return isOk;
         }
+
+        public Image insertFromUrl(string url)
+        {
+            var img = new Image { Url = url };
+            img = this.insert(img);
+            return img;
+        }
     }
 }

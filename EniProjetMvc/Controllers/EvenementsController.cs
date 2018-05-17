@@ -10,6 +10,7 @@ using BO;
 using EniProjetMvc.Models;
 using DAL;
 using EniProjetMvc.Extensions;
+using System.IO;
 
 namespace EniProjetMvc.Controllers
 {
@@ -62,7 +63,16 @@ namespace EniProjetMvc.Controllers
                     var theme = DAOFactory.GetRepository<Theme>(db).getById(vm.selectedTheme.Value);
                     vm.Evenement.Theme = theme;
                 }
-                DAOFactory.GetRepository<Evenement>(db).insert(vm.Evenement);
+                var evenement = DAOFactory.GetRepository<Evenement>(db).insert(vm.Evenement);
+                if (vm.Images.Count > 0)
+                {
+                    foreach (var id in vm.Images)
+                    {
+                        var img = DAOFactory.GetRepository<Image>(db).getById(id);
+                        img.Evenement = evenement;
+                        DAOFactory.GetRepository<Image>(db).update(img);
+                    }
+                }
                 return RedirectToAction("Index");
             }
 
@@ -164,9 +174,26 @@ namespace EniProjetMvc.Controllers
 
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public JsonResult AjaxUploadImage(HttpFileCollection files)
+        public JsonResult AjaxUploadImage()
         {
-            return null;
+            List<Image> created = new List<Image>();
+            var repo = DAOFactory.GetRepository<Image>(db) as ImageDAO;
+
+            if (!Directory.Exists(Server.MapPath("~/uploads/")))
+                Directory.CreateDirectory(Server.MapPath("~/uploads/"));
+
+            foreach (string fileName in Request.Files)
+            {
+                HttpPostedFileBase file = Request.Files[fileName];
+                var tmpFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                var fullName = "~/uploads/" + tmpFileName;
+                file.SaveAs(Server.MapPath(fullName));
+                var img = repo.insertFromUrl(fullName);
+                created.Add(img);
+
+            }
+            var res = new { Images = created };
+            return Json(res);
         }
 
         protected override void Dispose(bool disposing)

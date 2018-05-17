@@ -30,10 +30,14 @@ namespace EniProjetMvc.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
 
+
             var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            RoleManager.Create(new IdentityRole("admin"));
-            RoleManager.Create(new IdentityRole("organizer"));
-            RoleManager.Create(new IdentityRole("convive"));
+            if (!RoleManager.RoleExists("admin"))
+            {
+                RoleManager.Create(new IdentityRole("admin"));
+                RoleManager.Create(new IdentityRole("organizer"));
+                RoleManager.Create(new IdentityRole("convive"));
+            }
             
 
         }

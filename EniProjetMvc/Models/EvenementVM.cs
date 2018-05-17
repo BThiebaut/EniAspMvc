@@ -14,16 +14,18 @@ namespace EniProjetMvc.Models
         public Evenement Evenement { get; set; }
         public List<Theme> Themes { get; set; }
         public int? selectedTheme { get; set; }
-        public List<string> ImagesUrls { get; set; }
+        public List<int> Images { get; set; }
 
         public EvenementVM(IAppDbContext db)
         {
             Themes = DAOFactory.GetRepository<Theme>(db).listAll();
+            Images = new List<int>();
         }
 
         public EvenementVM()
         {
             Themes = new List<Theme>();
+            Images = new List<int>();
         }
 
     }

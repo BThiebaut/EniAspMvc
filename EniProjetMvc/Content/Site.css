@@ -47,3 +47,18 @@ textarea {
 h2{
     text-align: center;
 }
+
+#fileList li {
+    font-size: 16px;
+    display: block;
+    padding: 5px 0;
+    margin-top: 10px;
+}
+
+#fileList li > span {
+    margin-left: 30px;
+}
+
+#fileList li > img {
+    width: 50px;
+}
