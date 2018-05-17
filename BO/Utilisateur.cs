@@ -1,6 +1,7 @@
 ﻿using BO.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace BO
 {
     public class Utilisateur : AbsEntity<Utilisateur>
     {
+        [DisplayName("Adresse")]
         [Required]
         public string Adresse { get; set; }
     }

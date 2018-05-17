@@ -6,15 +6,19 @@
 
 <h2>Liste des événements</h2>
 
-<p>
-    <a class="btn btn-sm btn-success" href="@Url.Action("Create", "Evenements")"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nouvel évenement</a>
-</p>
+@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+{
+    <p>
+        <a class="btn btn-sm btn-success" href="@Url.Action("Create", "Evenements")"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nouvel évenement</a>
+    </p>
+}
+
 <p id="liste-evenements">
   
 </p>
 
  <!-- Modal -->
-<div class="modal fade" id="detailModal" role="dialog">
+<div class="modal fade modal-lg" id="detailModal" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
