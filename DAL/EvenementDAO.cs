@@ -48,7 +48,7 @@ namespace DAL
 
         public override List<Evenement> listAll()
         {
-            return dbContext.Evenements.OrderBy(e => e.Statut).ToList();
+            return dbContext.Evenements.Include(e => e.Images).OrderBy(e => e.Statut).ToList();
         }
 
         public override bool update(Evenement obj)

@@ -188,6 +188,7 @@ namespace EniProjetMvc.Controllers
                 var tmpFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                 var fullName = "~/uploads/" + tmpFileName;
                 file.SaveAs(Server.MapPath(fullName));
+                fullName = fullName.Replace("~", "");
                 var img = repo.insertFromUrl(fullName);
                 created.Add(img);
 

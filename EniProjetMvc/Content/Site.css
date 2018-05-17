@@ -61,7 +61,43 @@ h2{
 
 #fileList li > img {
     width: 50px;
+}
 
-table.table td{
+table.table td {
     padding: 4px !important;
+}
+
+#ListEventOrganizer div.event-item {
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-bottom: 0;
+    width: 100%;
+    height: 200px;
+}
+#ListEventOrganizer div.event-item p + p {
+    width: 100%;
+}
+
+#ListEventOrganizer .event-item + h4 {
+    background-color: rgba(100,100,100, 0.1);
+    text-decoration: none;
+    cursor: pointer;
+    text-align: center;
+    margin: 0;
+    font-size: 20px;
+}
+
+#ListEventOrganizer .btn-liste-footer .btn{
+  border-radius: 0;
+  margin: 0;   
+}
+
+#ListEventOrganizer .event-item:hover {
+    color: black;
+}
+
+#ListEventOrganizer .evenement {
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
 }

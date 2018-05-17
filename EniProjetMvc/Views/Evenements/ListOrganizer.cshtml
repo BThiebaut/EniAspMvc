@@ -3,6 +3,7 @@
 @model IEnumerable<BO.Evenement>
 @{
     ViewBag.Title = "ListOrganizer";
+    string firstImageLink = "";
 }
 
 
@@ -12,17 +13,24 @@
     <div class="row">
         @foreach (var item in Model)
         {
-            <div class="col-lg-3">
-               @{string firstImageLink = item.Images != null && item.Images.Count() > 0 ? item.Images.First().Url : "DefaultImage"; }
-                <div class="small-box" style="background-image:url(@(firstImageLink)); background-size: cover;" >
+            
+            <div class="col-lg-3 evenement">
+                @{
+                    bool showAllBtn = item.Statut != StatutEvenement.ANNULE && item.Statut != StatutEvenement.ARCHIVE && User.Identity.IsAuthenticated && User.IsInRole("admin");
+                    var colLength = showAllBtn ? "33%" : "100%";
+                }
+
+                @{ firstImageLink = item.Images != null && item.Images.Count() > 0 ? item.Images.First().Url : "DefaultImage"; }
+                <div class="small-box event-item" style="background-image:url(@(firstImageLink));">
                     <p>
-                        
-                        @if(item.Statut == StatutEvenement.EN_COURS){
-                        <span class="label label-success">
-                            @EnumerationUtil.Instance.getLabelStatut(item.Statut)
-                        </span>
+
+                        @if (item.Statut == StatutEvenement.EN_COURS)
+                        {
+                            <span class="label label-success">
+                                @EnumerationUtil.Instance.getLabelStatut(item.Statut)
+                            </span>
                         }
-                        else if(item.Statut == StatutEvenement.ANNULE)
+                        else if (item.Statut == StatutEvenement.ANNULE)
                         {
                             <span class="label label-warning">
                                 @EnumerationUtil.Instance.getLabelStatut(item.Statut)
@@ -35,35 +43,31 @@
                             </span>
                         }
                         else {
-                        <span class="label label-info">
-                            @EnumerationUtil.Instance.getLabelStatut(item.Statut)
-                        </span>
+                            <span class="label label-info">
+                                @EnumerationUtil.Instance.getLabelStatut(item.Statut)
+                            </span>
                         }
-                       
+
                     </p>
-                    <p style="padding-top:120px;" onclick="detailEvent(@item.Id)" data-toggle="modal" data-target="#detailModal"></p>
-                    <h4>@item.Intitule</h4>
-                    <p class="small-box-footer">
-                       <!-- @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |  --> 
-                       <!-- @Html.ActionLink("Details", "Details", new { id = item.Id }) | --> 
-                       <!-- @Html.ActionLink("Delete", "Delete", new { id = item.Id }) -->
-                        <button type="button" class="btn btn-sm btn-info" onclick="detailEvent(@item.Id)" data-toggle="modal" data-target="#detailModal"><i class="fa fa-eye" aria-hidden="true"></i> Détails</button>
-                         @if (item.Statut != StatutEvenement.ANNULE && item.Statut != StatutEvenement.ARCHIVE && User.Identity.IsAuthenticated && User.IsInRole("admin"))
-                        {
-                            <a class="btn btn-sm btn-warning" href="@Url.Action("Edit", "Evenements")/@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i> Modifier</a>
-                            <button type="button" class="btn btn-sm btn-danger" onclick="deleteEvent(@item.Id)"><i class="fa fa-times" aria-hidden="true"></i> Annuler</button>
-                         }
-                    </p>
+                    <p onclick="detailEvent(@item.Id)" data-toggle="modal" data-target="#detailModal"></p>
                 </div>
+                <h4>@item.Intitule</h4>
+                <div class="small-box-footer btn-liste-footer">
+                    <button style="width: @colLength" type="button" class="btn btn-sm btn-info" onclick="detailEvent(@item.Id)" data-toggle="modal" data-target="#detailModal"><i class="fa fa-eye" aria-hidden="true"></i> Détails</button>
+                    @if (showAllBtn)
+                    {
+                        <button style="width: @colLength" type="button" class="btn btn-sm btn-warning" onclick="redirectAction(this)" data-href="@Url.Action("Edit", "Evenements")/@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i> Modifier</button>
+                        <button style="width: @colLength" type="button" class="btn btn-sm btn-danger" onclick="deleteEvent(@item.Id)"><i class="fa fa-times" aria-hidden="true"></i> Annuler</button>
+                    }
+                    
+                </div>
+
             </div>
-                
 
 
-        }
+
+                    }
     </div>
-   
+
 
 </div>
-
-
-
