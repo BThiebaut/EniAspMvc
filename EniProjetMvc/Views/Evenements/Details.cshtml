@@ -10,38 +10,67 @@
        <h3>@Html.DisplayFor(model => model.Intitule)</h3>
     </div>
     <div class="box-body">
-        <table class="table table-bordered">
-            <tbody>
-                <tr>
-                    <td>@Html.DisplayNameFor(model => model.DateDebut)</td>
-                    <td>@Model.DateDebut.ToString("dd/MM/yyyy")</td>
-                </tr>
-                <tr>
-                    <td>@Html.DisplayNameFor(model => model.DateFin)</td>
-                    <td>@Model.DateFin.ToString("dd/MM/yyyy")</td>
-                </tr>
-                <tr>
-                    <td>@Html.DisplayNameFor(model => model.Duree)</td>
-                    <td>@Html.DisplayFor(model => model.Duree)</td>
-                </tr>
-                <tr>
-                    <td>@Html.DisplayNameFor(model => model.HeureOuverture)</td>
-                    <td>@Html.DisplayFor(model => model.HeureOuverture)</td>
-                </tr>
-                <tr>
-                    <td>@Html.DisplayNameFor(model => model.HeureFermeture)</td>
-                    <td>@Html.DisplayFor(model => model.HeureFermeture)</td>
-                </tr>
-                <tr>
-                    <td>@Html.DisplayNameFor(model => model.Adresse)</td>
-                    <td>@Html.DisplayFor(model => model.Adresse)</td>
-                </tr>
-                <tr>
-                    <td>@Html.DisplayNameFor(model => model.Statut)</td>
-                    <td>@EnumerationUtil.Instance.getLabelStatut(Model.Statut)</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-lg-6">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.DateDebut)</td>
+                            <td>@Model.DateDebut.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.DateFin)</td>
+                            <td>@Model.DateFin.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.Duree)</td>
+                            <td>@Html.DisplayFor(model => model.Duree)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.HeureOuverture)</td>
+                            <td>@Html.DisplayFor(model => model.HeureOuverture)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.HeureFermeture)</td>
+                            <td>@Html.DisplayFor(model => model.HeureFermeture)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.Adresse)</td>
+                            <td>@Html.DisplayFor(model => model.Adresse)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.Statut)</td>
+                            <td>@EnumerationUtil.Instance.getLabelStatut(Model.Statut)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            @if (Model.Images != null && Model.Images.Count > 0)
+            {
+            <div class="col-lg-6">
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        
+                            @foreach (var image in Model.Images)
+                            {
+                                <div class="item active">
+                                    <img src="@image.Url" alt="First slide">
+                                </div>
+                            }
+                        
+                    </div>
+                    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                        <span class="fa fa-angle-left"></span>
+                    </a>
+                    <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                        <span class="fa fa-angle-right"></span>
+                    </a>
+                </div>
+            </div>
+            }
+        </div>
+       
+       
     </div>
 
     <div class="box">
