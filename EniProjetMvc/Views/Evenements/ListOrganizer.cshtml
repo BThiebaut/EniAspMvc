@@ -13,14 +13,14 @@
     <div class="row">
         @foreach (var item in Model)
         {
-            
+
             <div class="col-lg-3 evenement">
                 @{
                     bool showAllBtn = item.Statut != StatutEvenement.ANNULE && item.Statut != StatutEvenement.ARCHIVE && User.Identity.IsAuthenticated && User.IsInRole("admin");
-                    var colLength = showAllBtn ? "33%" : "100%";
+                    var colLength = showAllBtn ? "33.33%" : "100%";
                 }
 
-                @{ firstImageLink = item.Images != null && item.Images.Count() > 0 ? item.Images.First().Url : "DefaultImage"; }
+                @{ firstImageLink = item.Images != null && item.Images.Count() > 0 ? item.Images.First().Url : "/Content/images/default.png"; }
                 <div class="small-box event-item" style="background-image:url(@(firstImageLink));">
                     <p>
 
@@ -59,7 +59,6 @@
                         <button style="width: @colLength" type="button" class="btn btn-sm btn-warning" onclick="redirectAction(this)" data-href="@Url.Action("Edit", "Evenements")/@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i> Modifier</button>
                         <button style="width: @colLength" type="button" class="btn btn-sm btn-danger" onclick="deleteEvent(@item.Id)"><i class="fa fa-times" aria-hidden="true"></i> Annuler</button>
                     }
-                    
                 </div>
 
             </div>

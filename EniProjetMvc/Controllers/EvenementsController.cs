@@ -11,6 +11,7 @@ using EniProjetMvc.Models;
 using DAL;
 using EniProjetMvc.Extensions;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace EniProjetMvc.Controllers
 {
@@ -149,6 +150,19 @@ namespace EniProjetMvc.Controllers
         {
             var list = DAOFactory.GetRepository<Evenement>(db).listAll();
             var view = ViewRenderer.RenderPartialView("~/Views/Evenements/ListOrganizer.cshtml", list, ControllerContext);
+            view = Regex.Replace(view, @"[\r\n]+", "");
+            view = view.Replace("                        ", ""); // Fuck it.
+            var res = new { Html = view };
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult AjaxListeHome(StatutEvenement statut, int limit)
+        {
+            var repo = DAOFactory.GetRepository<Evenement>(db) as EvenementDAO;
+            var list = repo.getByStatut(statut, limit);
+            ViewBag.statut = statut;
+            var view = ViewRenderer.RenderPartialView("~/Views/Home/ListOrganizer.cshtml", list, ControllerContext);
             var res = new { Html = view };
             return Json(res, JsonRequestBehavior.AllowGet);
         }

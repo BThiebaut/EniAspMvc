@@ -4,7 +4,11 @@
 @{
     ViewBag.Title = "Create";
     var mode = Model.Evenement == null;
+    ViewBag.btnNav = new List<BtnNav>();
+    var btnNav = new BtnNav { Url = Url.Action("Index"), Text = "Retour", Icone = "fa fa-arrow-left", Color = "default" };
+    ViewBag.btnNav.Add(btnNav);
 }
+
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -55,10 +59,6 @@
 
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

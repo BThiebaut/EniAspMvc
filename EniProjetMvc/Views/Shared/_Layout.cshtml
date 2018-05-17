@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using EniProjetMvc.Extensions
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -12,8 +13,9 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
 </head>
-<body class="hold-transition skin-black">
+<body class="hold-transition skin-black fixed">
     <div class="wrapper" id="wrapped-content">
+        <div id="top-content"></div>
         <header class="main-header">
             <!-- Logo -->
             <a href="@Url.Action("Index", "Home")" class="logo">
@@ -25,7 +27,6 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
                     <li>@Html.ActionLink("Evenements", "Index", "Evenements")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </nav>
@@ -33,21 +34,34 @@
 
         <!-- Content Wrapper. Contains page content -->
         <!-- Content Header (Page header) -->
-        <section class="content-header">
+
+        @{ 
+            var hasHeader = ViewBag.Title != null && ViewBag.Title != "" ? "" : "hidden-header";
+
+        }
+
+        <section class="content-header @hasHeader">
+            <div class="btn-nav">
+                @if (ViewBag.btnNav != null && ViewBag.btnNav.Count > 0)
+                {
+                    foreach (BtnNav item in ViewBag.btnNav)
+                    {
+                        <a href="@item.Url" class="btn btn-sm btn-@item.Color"><i class="@item.Icone"></i> @item.Text</a>
+                    }
+                }
+            </div>
             <h1>
                 @ViewBag.Title
             </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">TODO</li>
-            </ol>
         </section>
 
         <!-- Main content -->
-        <section class="content">
+        <section class="content @ViewBag.ClassIndex">
             @RenderBody()
         </section>
         <!-- /.content -->
+
+        <a href="#top-content" class="back-to-top hidden"><i class="fa fa-arrow-circle-up fa-3x"></i></a>
         <!-- /.content-wrapper -->
         @if (ViewBag.hideFooter == null)
         {
@@ -65,6 +79,17 @@
     @RenderSection("scripts", required: false)
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript">
+
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                $('.back-to-top').removeClass('hidden');
+            } else {
+                $('.back-to-top').addClass('hidden');
+            }
+        }
+
         $(function () {
             $('.datepicker').datepicker({
                 format: 'mm/dd/yyyy'
@@ -73,6 +98,7 @@
                 donetext: 'Ok',
                 autoclose: true,
             });
+
         });
     </script>
 </body>

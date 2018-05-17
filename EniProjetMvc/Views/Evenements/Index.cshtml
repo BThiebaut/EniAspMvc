@@ -1,16 +1,14 @@
-﻿@model IEnumerable<BO.Evenement>
+﻿@using EniProjetMvc.Extensions
+@model IEnumerable<BO.Evenement>
 
 @{
     ViewBag.Title = "Liste des événements";
-}
-
-<h2>Liste des événements</h2>
-
-@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
-{
-    <p>
-        <a class="btn btn-sm btn-success" href="@Url.Action("Create", "Evenements")"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nouvel évenement</a>
-    </p>
+    if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+    {
+        ViewBag.btnNav = new List<BtnNav>();
+        var btnNav = new BtnNav { Url = @Url.Action("Create", "Evenements"), Text = "Nouvel événement", Icone = "fa fa-plus-circle", Color = "success" };
+        ViewBag.btnNav.Add(btnNav);
+    }
 }
 
 <p id="liste-evenements">
