@@ -36,7 +36,7 @@ namespace DAL
 
         public override Evenement getById(int id)
         {
-            return dbContext.Evenements.SingleOrDefault(e => e.Id == id);
+            return dbContext.Evenements.Include(e => e.Images).SingleOrDefault(e => e.Id == id);
         }
 
         public override Evenement insert(Evenement obj)
