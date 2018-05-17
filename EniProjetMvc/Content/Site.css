@@ -61,4 +61,7 @@ h2{
 
 #fileList li > img {
     width: 50px;
+
+table.table td{
+    padding: 4px !important;
 }

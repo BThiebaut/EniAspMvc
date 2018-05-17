@@ -14,7 +14,7 @@
         {
             <div class="col-lg-3">
                @{string firstImageLink = item.Images != null && item.Images.Count() > 0 ? item.Images.First().Url : "DefaultImage"; }
-                <div class="small-box" style="background-image:url(@(firstImageLink)); background-size: cover;">
+                <div class="small-box" style="background-image:url(@(firstImageLink)); background-size: cover;" >
                     <p>
                         
                         @if(item.Statut == StatutEvenement.EN_COURS){
@@ -41,7 +41,7 @@
                         }
                        
                     </p>
-                    <p style="padding-top:120px;"></p>
+                    <p style="padding-top:120px;" onclick="detailEvent(@item.Id)" data-toggle="modal" data-target="#detailModal"></p>
                     <h4>@item.Intitule</h4>
                     <p class="small-box-footer">
                        <!-- @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |  --> 
