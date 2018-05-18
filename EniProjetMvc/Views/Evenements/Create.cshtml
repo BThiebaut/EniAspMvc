@@ -135,8 +135,8 @@
             if (!isSendFile) {
                 var form = $('form');
                 var formData = new FormData();
-                $.each(filesUploads, function (index, data) {
-                    formData.append("Images[]", data);
+                $.each(filesUploads, function (index, data) {    
+                    formData.append("Images["+index+"]", data);
                 });
                 
                 e.preventDefault();
