@@ -9,11 +9,6 @@
     padding-right: 15px;
 }
 
-#wrapped-content {
-    height: 100%;
-    overflow: scroll;
-}
-
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
@@ -26,6 +21,16 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+#wrapped-content.content-index {
+    height: auto;
+    overflow: auto;
+      
+}
+
+#wrapped-content.content-index .main-footer {
+    display: none;
 }
 
 .main-footer {
@@ -54,7 +59,10 @@ section.content.content-index {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    height: 100%;
+    height: auto;
+    overflow: hidden;
+    margin-bottom: 0;
+    
 }
 section.content.content-index .text {
     background-color: #fff;
@@ -231,7 +239,7 @@ a.show-all {
     color: #fff;
 }
 
-/* Utisl */
+/* Utils */
 
 .carousel-indicators {
     background-color: rgba(0,0,0,0.3);
@@ -271,4 +279,8 @@ a.show-all {
 
 .m-t-20 {
     margin-top: 20px !important;
+}
+
+.bg-white {
+    background-color: #fff;
 }
