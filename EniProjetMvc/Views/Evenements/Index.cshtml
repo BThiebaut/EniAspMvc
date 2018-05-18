@@ -15,75 +15,9 @@
   
 </p>
 
-<div class="modal fade" id="detailModal" role="dialog">
-    <div class="modal-dialog modal-lg" style="width:900px">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h2 class="modal-title">Détail de l'événement</h2>
-            </div>
-            <div class="modal-body">
-                <div id="event-detail-modal"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fermer</button>
-                <button type="button" class="btn btn-success"><i class="fa fa-address-book-o" aria-hidden="true"></i> S'inscrire</button>
-            </div>
-        </div>
-    </div>
-</div>
+@RenderPage("~/Views/Evenements/ModalDetail.cshtml");
 
-<script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByNxF6boskqziz8hWVjBuTJhXCPYlOsfE&sensor=false">
-</script>
 <script type="text/javascript">
-
-    function setMap(address) {
-        var geocoder;
-        var map;
-
-        geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(-34.397, 150.644);
-        var myOptions = {
-            zoom: 8,
-            center: latlng,
-            mapTypeControl: true,
-            mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.DROPDOWN_MENU },
-            navigationControl: true,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        map = new google.maps.Map(document.getElementById("google-map"), myOptions);
-        if (geocoder) {
-            geocoder.geocode({ 'address': address }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
-                        map.setCenter(results[0].geometry.location);
-
-                        var infowindow = new google.maps.InfoWindow(
-                            {
-                                content: '<b>' + address + '</b>',
-                                size: new google.maps.Size(150, 50)
-                            });
-
-                        var marker = new google.maps.Marker({
-                            position: results[0].geometry.location,
-                            map: map,
-                            title: address
-                        });
-                        google.maps.event.addListener(marker, 'click', function () {
-                            infowindow.open(map, marker);
-                        });
-
-                    } else {
-                        $.notify("No results found", "error");
-                    }
-                } else {
-                    $.notify("Geocode was not successful for the following reason: " + status, "error");
-                }
-            });
-        }
-
-    }
 
     $(function () {
         $.ajax({
@@ -100,10 +34,10 @@
         });
     });
 
-    function deleteEvent(id){
+    function deleteEvent(self){
         swal({
             title: "Confirmation",
-            text: "Voulez-vous annuler l'événement numéro " + id + " ?",
+            text: "Voulez-vous annuler l'événement \"" + $(self).data('name') + "\" ?",
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -111,7 +45,7 @@
         .then((willDelete) => {
             if (willDelete) {
                 $.ajax({
-                    url: '@Url.Action("AjaxDelete", "Evenements")' + '/' + id,
+                    url: '@Url.Action("AjaxDelete", "Evenements")' + '/' + $(self).data('id'),
                     type: 'GET',
                     dataType: 'json',
                 }).done(function (response) {
@@ -138,22 +72,6 @@
             } else {
                 //ne rien faire
             }
-        });
-    }
-
-    function detailEvent(id) {
-        $('#event-detail-modal').html('<i class="fa fa-cog fa-spin  fa-2x fa-fw"></i> chargement...');
-        $.ajax({
-            url: '@Url.Action("AjaxDetails", "Evenements")' + '/' + id,
-            type: 'GET',
-            dataType: 'json'
-        }).done(function (response) {
-            $('#event-detail-modal').html(response.Html);
-            setMap(response.Adresse);
-
-        }).fail(function (response) {
-            $('#event-detail-modal').html('<div class="alert alert-danger">Une erreur s\'est produite lors du chargement des données</div>');
-            console.log(response);
         });
     }
 
