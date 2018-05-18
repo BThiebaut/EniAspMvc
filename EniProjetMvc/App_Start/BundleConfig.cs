@@ -39,7 +39,7 @@ namespace EniProjetMvc
                        "~/Scripts/jquery.knob.min.js",
                        "~/Scripts/moment.min.js",
                        "~/Scripts/bootstrap-datepicker.min.js",
-                      "~/Scripts/adminlte.min.js",
+                      "~/Scripts/adminlte.js",
                       "~/Scripts/bootstrap-clockpicker.min.js",
                       "~/Scripts/notify.min.js",
                       "~/Scripts/custom.js"

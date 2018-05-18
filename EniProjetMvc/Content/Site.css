@@ -44,6 +44,18 @@ section.content {
     margin-bottom: 30px;
 }
 
+section.content.content-index {
+    background-image : url('/Content/images/bg-index.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+}
+section.content.content-index .text {
+    background-color: #fff;
+    margin: 15px 0;
+}
+
 .btn-nav {
     float: left;
     position: absolute;
@@ -103,7 +115,6 @@ table.table td {
 }
 
 #ListEventOrganizer .event-item + h4 {
-    background-color: rgba(100,100,100, 0.1);
     text-decoration: none;
     cursor: pointer;
     text-align: center;
@@ -136,7 +147,7 @@ table.table td {
 
 /* Index */
 .seperation-title {
-    height: 40px;
+    height: 60px;
     font-weight: 700;
     text-align: center;
     font-size: 20px;
@@ -144,7 +155,12 @@ table.table td {
     box-shadow: 
         inset 0px 11px 8px -10px #666,
         inset 0px -11px 8px -10px #666; 
-    line-height: 42px;
+    line-height: 62px;
+    margin: 15px 0;
+}
+
+.list-event-home {
+    margin-bottom: 20px;
 }
 
 .bg-success {
