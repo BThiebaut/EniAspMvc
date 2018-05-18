@@ -1,4 +1,5 @@
-﻿using DAL.Interfaces;
+﻿using BO;
+using DAL.Interfaces;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -24,5 +25,11 @@ namespace EniProjetMvc.Models
         public System.Data.Entity.DbSet<BO.Theme> Themes { get; set; }
         public System.Data.Entity.DbSet<BO.Image> Images { get; set; }
         public System.Data.Entity.DbSet<BO.Utilisateur> Utilisateurs { get; set; }
+        
+        public ApplicationUser GetFullUser(string userId)
+        {
+            return this.Users.Where(u => u.Id == userId).Include(u => u.Utilisateur).Include(u => u.Utilisateur.Evenements).SingleOrDefault();
+        }
+
     }
 }

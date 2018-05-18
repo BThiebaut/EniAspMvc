@@ -14,5 +14,14 @@ namespace BO
         [DisplayName("Adresse")]
         [Required]
         public string Adresse { get; set; }
+
+        public List<Evenement> Evenements { get; set; }
+
+        public IApplicationUser ApplicationUser { get; set; }
+
+        public Utilisateur()
+        {
+            Evenements = new List<Evenement>();
+        }
     }
 }

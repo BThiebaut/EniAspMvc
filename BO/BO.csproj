@@ -53,6 +53,7 @@
     <Compile Include="Enums\StatutEvenement.cs" />
     <Compile Include="Evenement.cs" />
     <Compile Include="Image.cs" />
+    <Compile Include="Interfaces\IApplicationUser.cs" />
     <Compile Include="Interfaces\IIdentifiable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Theme.cs" />

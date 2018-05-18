@@ -53,6 +53,11 @@ namespace BO
         [DisplayName("Statut de l'événement")]
         [Required]
         public StatutEvenement Statut { get; set; }
+
+        public Evenement()
+        {
+            Convives = new List<Utilisateur>();
+        }
         
     }
 }

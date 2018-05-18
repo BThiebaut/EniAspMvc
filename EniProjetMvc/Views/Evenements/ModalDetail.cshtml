@@ -1,4 +1,5 @@
-﻿<div class="modal fade" id="detailModal" role="dialog">
+﻿@using Microsoft.AspNet.Identity;
+<div class="modal fade" id="detailModal" role="dialog">
     <div class="modal-dialog modal-lg" style="width:900px">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,9 +9,11 @@
             <div class="modal-body">
                 <div id="event-detail-modal"></div>
             </div>
+            <input type="hidden" id="eventId" />
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fermer</button>
-                <button type="button" class="btn btn-success"><i class="fa fa-address-book-o" aria-hidden="true"></i> S'inscrire</button>
+                <button type="button" class="btn btn-success hidden" id="inscription"><i class="fa fa-address-book-o" aria-hidden="true"></i> S'inscrire</button>
+                <button type="button" class="btn btn-danger hidden" id="desinscription"><i class="fa fa-address-book-o" aria-hidden="true"></i> Se désinscrire</button>
             </div>
         </div>
     </div>
@@ -68,6 +71,7 @@
     }
 
     function detailEvent(id) {
+        $('#eventId').val(id);
         $('#event-detail-modal').html('<i class="fa fa-cog fa-spin  fa-2x fa-fw"></i> chargement...');
         $.ajax({
             url: '@Url.Action("AjaxDetails", "Evenements")' + '/' + id,
@@ -75,6 +79,11 @@
             dataType: 'json'
         }).done(function (response) {
             $('#event-detail-modal').html(response.Html);
+            if (response.Inscrit) {
+                $('#desinscription').removeClass('hidden');
+            } else {
+                $('#inscription').removeClass('hidden');
+            }
             setMap(response.Adresse);
 
         }).fail(function (response) {
@@ -82,4 +91,70 @@
             console.log(response);
         });
     }
+
+    $('#inscription').on('click', function () {
+        if (!$(this).hasClass('disabled')) {
+            $(this).addClass('disabled');
+            var self = this;
+            var isAuth = '@User.Identity.IsAuthenticated';
+            console.log(isAuth);
+            var eventId = $('#eventId').val();
+            var datas = { idEvenement: eventId };
+            if (isAuth) { // Inscrit l'utilisateur courrant
+                var userId = '@User.Identity.GetUserId()';
+                $.ajax({
+                    url: '@Url.Action("AjaxInscription", "Evenements")',
+                    method: 'post',
+                    data: datas
+                }).done(function (response) {
+                    if (!response.Error) {
+                        $.notify('Vous avez bien été inscrit à cet événement', 'success');
+                        $(self).addClass('hidden');
+                        $(self).removeClass('disabled');
+                        $('#desinscription').removeClass('hidden');
+                    } else {
+                        $.notify('Une erreur s\'est produite lors de l\'inscription', 'warn');
+                        $(this).removeClass('disabled');
+                    }
+                }).fail(function (response) {
+                    $.notify('Une erreur s\'est produite lors de l\'inscription', 'warn');
+                    $(this).removeClass('disabled');
+                    console.log(response);
+                });
+            } else { // demande connexion / inscription
+
+            }
+        }
+    });
+
+    $('#desinscription').on('click', function () {
+        if (!$(this).hasClass('disabled')) {
+            $(this).addClass('disabled');
+            var self = this;
+            var isAuth = '@User.Identity.IsAuthenticated';
+            console.log(isAuth);
+            var eventId = $('#eventId').val();
+            var datas = { idEvenement: eventId };
+            $.ajax({
+                url: '@Url.Action("AjaxDesinscription", "Evenements")',
+                method: 'post',
+                data: datas
+            }).done(function (response) {
+                if (!response.Error) {
+                    $.notify('Vous avez bien été désinscrit de cet événement', 'success');
+                    $(self).addClass('hidden');
+                    $(self).removeClass('disabled');
+                    $('#inscription').removeClass('hidden');
+                } else {
+                    $.notify('Une erreur s\'est produite lors de la désinscription', 'warn');
+                    $(self).removeClass('disabled');
+                }
+            }).fail(function (response) {
+                $.notify('Une erreur s\'est produite lors de la désinscription', 'warn');
+                $(this).removeClass('disabled');
+                console.log(response);
+            });
+        }
+    });
+
 </script>

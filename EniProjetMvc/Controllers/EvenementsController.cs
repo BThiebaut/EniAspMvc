@@ -12,12 +12,51 @@ using DAL;
 using EniProjetMvc.Extensions;
 using System.IO;
 using System.Text.RegularExpressions;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 
 namespace EniProjetMvc.Controllers
 {
     public class EvenementsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+
+        public EvenementsController()
+        {
+        }
+
+        public EvenementsController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+            SignInManager = signInManager;
+        }
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         // GET: Evenements
         public ActionResult Index()
@@ -172,7 +211,18 @@ namespace EniProjetMvc.Controllers
         {
             var evenement = DAOFactory.GetRepository<Evenement>(db).getById(id);
             var view = ViewRenderer.RenderPartialView("~/Views/Evenements/Details.cshtml", evenement, ControllerContext);
-            var res = new { Html = view, Adresse = evenement.Adresse };
+            var repo = DAOFactory.GetRepository<Utilisateur>(db) as UtilisateurDAO;
+
+            var isInscrit = false;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.Identity.GetUserId();
+                var user = db.GetFullUser(userId);
+                isInscrit = repo.HasInscription(evenement, user.Utilisateur.Id);
+            }
+
+            var res = new { Html = view, Adresse = evenement.Adresse, Inscrit = isInscrit };
             return Json(res, JsonRequestBehavior.AllowGet);
         }
 
@@ -209,6 +259,35 @@ namespace EniProjetMvc.Controllers
             }
             var res = new { Images = created };
             return Json(res);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public JsonResult AjaxInscription(int idEvenement)
+        {
+            var userId = User.Identity.GetUserId();
+            var evenement = DAOFactory.GetRepository<Evenement>(db).getById(idEvenement);
+            var user = db.GetFullUser(userId);
+
+
+            user.Utilisateur.Evenements.Add(evenement);
+            var isOk = DAOFactory.GetRepository<Utilisateur>(db).update(user.Utilisateur);
+
+            return Json(new { Error = !isOk });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public JsonResult AjaxDesinscription(int idEvenement)
+        {
+            var userId = User.Identity.GetUserId();
+            var evenement = DAOFactory.GetRepository<Evenement>(db).getById(idEvenement);
+            var user = db.GetFullUser(userId);
+
+            user.Utilisateur.Evenements.Remove(evenement);
+            var isOk = DAOFactory.GetRepository<Utilisateur>(db).update(user.Utilisateur);
+
+            return Json(new { Error = !isOk });
         }
 
         protected override void Dispose(bool disposing)

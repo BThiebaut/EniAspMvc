@@ -1,4 +1,5 @@
 ﻿using BO;
+using BO.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,6 +76,12 @@ namespace DAL
                 isOk = false;
             }
             return isOk;
+        }
+
+        public bool HasInscription(Evenement evenement, int idUtilisateur)
+        {
+            var isok = dbContext.Utilisateurs.Where(u => u.Id == idUtilisateur && u.Evenements.Where(e => e.Id == evenement.Id).FirstOrDefault() != null).FirstOrDefault();
+            return isok != null;
         }
     }
 }
