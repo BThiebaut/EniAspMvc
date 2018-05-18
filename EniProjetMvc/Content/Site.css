@@ -40,6 +40,10 @@ textarea {
     margin-top: 50px;
 }
 
+section.content {
+    margin-bottom: 30px;
+}
+
 .btn-nav {
     float: left;
     position: absolute;
@@ -124,9 +128,10 @@ table.table td {
 
 .back-to-top {
     position: fixed;
-    bottom: 30px;
+    bottom: 40px;
     right: 30px;
     color: #333;
+    z-index: 850;
 }
 
 /* Index */
