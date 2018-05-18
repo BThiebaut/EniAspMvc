@@ -53,11 +53,11 @@
                 </div>
                 <h4>@item.Intitule</h4>
                 <div class="small-box-footer btn-liste-footer">
-                    <button style="width: @colLength" type="button" class="btn btn-sm btn-info" onclick="detailEvent(@item.Id)" data-toggle="modal" data-target="#detailModal"><i class="fa fa-eye" aria-hidden="true"></i> Détails</button>
+                    <button style="width: @colLength" type="button" class="btn btn-sm btn-primary" onclick="detailEvent(@item.Id)" data-toggle="modal" data-target="#detailModal"><i class="fa fa-eye" aria-hidden="true"></i> Détails</button>
                     @if (showAllBtn)
                     {
-                        <button style="width: @colLength" type="button" class="btn btn-sm btn-warning" onclick="redirectAction(this)" data-href="@Url.Action("Edit", "Evenements")/@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i> Modifier</button>
-                        <button style="width: @colLength" type="button" class="btn btn-sm btn-danger" onclick="deleteEvent(@item.Id)"><i class="fa fa-times" aria-hidden="true"></i> Annuler</button>
+                        <button style="width: @colLength" type="button" class="btn btn-sm btn-dark-warning" onclick="redirectAction(this)" data-href="@Url.Action("Edit", "Evenements")/@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i> Modifier</button>
+                        <button style="width: @colLength" type="button" class="btn btn-sm btn-dark-danger" onclick="deleteEvent(this)" data-id="@item.Id" data-name="@item.Intitule"><i class="fa fa-times" aria-hidden="true"></i> Annuler</button>
                     }
                 </div>
 
