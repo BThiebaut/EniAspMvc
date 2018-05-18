@@ -531,7 +531,7 @@ throw new Error('AdminLTE requires jQuery')
 
   var Default = {
     slimscroll : true,
-    resetHeight: false
+    resetHeight: true
   };
 
   var Selector = {
@@ -562,9 +562,8 @@ throw new Error('AdminLTE requires jQuery')
     this.fix();
     this.fixSidebar();
 
-    $('body').removeClass(ClassName.holdTransition);
-
-    if (this.options.resetHeight) {
+    var isIndex = $('.content').hasClass('content-index');
+    if (!isIndex && this.options.resetHeight) {
       $('body, html, ' + Selector.wrapper).css({
         'height'    : 'auto',
         'min-height': '100%'

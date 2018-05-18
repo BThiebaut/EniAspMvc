@@ -54,6 +54,9 @@ section.content.content-index {
 section.content.content-index .text {
     background-color: #fff;
     margin: 15px 0;
+    box-shadow: 
+        inset 0px 11px 4px -10px #666,
+        inset 0px -11px 4px -10px #666; 
 }
 
 .btn-nav {
@@ -137,6 +140,17 @@ table.table td {
     margin-bottom: 10px;
 }
 
+#ListEventOrganizer .no-event {
+    display: inline-block;
+    text-align: center;
+    height: 80px;
+    font-size: 16px;
+    line-height: 75px;
+    font-weight: 700;
+    margin: 0;
+}
+
+
 .back-to-top {
     position: fixed;
     bottom: 40px;
@@ -178,7 +192,7 @@ table.table td {
 }
 
 .hidden-header {
-    margin-top: 30px;
+    margin-top: 8px;
 }
 
 .lowercase {
@@ -205,6 +219,14 @@ a.show-all {
  margin: 0;
  padding: 0;
 }
+
+.site-pres {
+    background: none;
+    text-shadow: 2px 2px 4px #000;
+    color: #fff;
+}
+
+/* Utisl */
 
 .carousel-indicators {
     background-color: rgba(0,0,0,0.3);
@@ -240,4 +262,8 @@ a.show-all {
 .item > img{
     width:100%; 
     height: 230px !important;
+}
+
+.m-t-20 {
+    margin-top: 20px !important;
 }
