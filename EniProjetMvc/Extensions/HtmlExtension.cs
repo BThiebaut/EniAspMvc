@@ -66,7 +66,7 @@ namespace EniProjetMvc.Extensions
             sb.Append(formGroup);
             sb.Append(html.LabelFor(expressionLabel, htmlAttributes: new { @class = "control-label col-md-2" }));
             sb.Append(colMd10);
-            sb.Append(html.DropDownListFor(expression, selectList));
+            sb.Append(html.DropDownListFor(expression, selectList, htmlAttributes: new { @class = "form-control" }));
             sb.Append(html.ValidationMessageFor(expression, "", new { @class = "text-danger" }));
             sb.Append(endDiv);
             sb.Append(endDiv);

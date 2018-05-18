@@ -32,6 +32,7 @@ namespace EniProjetMvc
                       "~/Content/bootstrap-datepicker.min.css",
                       "~/Content/ckeditor.css",
                       "~/Content/bootstrap-clockpicker.min.css",
+                      "~/Content/leaflet.css",
                       "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/adminlte").Include(
@@ -42,6 +43,9 @@ namespace EniProjetMvc
                       "~/Scripts/adminlte.js",
                       "~/Scripts/bootstrap-clockpicker.min.js",
                       "~/Scripts/notify.min.js",
+                      "~/Scripts/leaflet.js",
+                      "~/Scripts/leaflet-providers.js",
+                      "~/Scripts/leaflet-geosearch-min.js",
                       "~/Scripts/custom.js"
                       ));
 
