@@ -9,9 +9,22 @@ namespace DAL
 {
     public class ImageDAO : AbsDAO<Image>
     {
-        public static new ImageDAO Instance => new ImageDAO();
-        public ImageDAO()
+        private static readonly ImageDAO instance = new ImageDAO();
+
+        static ImageDAO()
         {
+        }
+
+        private ImageDAO()
+        {
+        }
+
+        public static ImageDAO Instance
+        {
+            get
+            {
+                return instance;
+            }
         }
 
         public override bool delete(Image obj)

@@ -11,10 +11,22 @@ namespace DAL
 {
     public class EvenementDAO : AbsDAO<Evenement>
     {
-        public static new EvenementDAO Instance => new EvenementDAO();
+        private static readonly EvenementDAO instance = new EvenementDAO();
 
-        public EvenementDAO()
+        static EvenementDAO()
         {
+        }
+
+        private EvenementDAO()
+        {
+        }
+
+        public static EvenementDAO Instance
+        {
+            get
+            {
+                return instance;
+            }
         }
 
         public override bool delete(Evenement obj)
@@ -41,7 +53,7 @@ namespace DAL
 
         public List<Evenement> getByStatut(StatutEvenement statut, int limit)
         {
-            return dbContext.Evenements.Where(e=>e.Statut == statut).Take(limit).Include(e => e.Images).ToList();
+            return dbContext.Evenements.Where(e => e.Statut == statut).Take(limit).Include(e => e.Images).ToList();
         }
 
         public override Evenement insert(Evenement obj)

@@ -9,9 +9,22 @@ namespace DAL
 {
     public class ThemeDAO : AbsDAO<Theme>
     {
-        public static new ThemeDAO Instance => new ThemeDAO();
-        public ThemeDAO()
+        private static readonly ThemeDAO instance = new ThemeDAO();
+
+        static ThemeDAO()
         {
+        }
+
+        private ThemeDAO()
+        {
+        }
+
+        public static ThemeDAO Instance
+        {
+            get
+            {
+                return instance;
+            }
         }
 
         public override bool delete(Theme obj)

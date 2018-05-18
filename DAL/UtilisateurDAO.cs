@@ -9,10 +9,22 @@ namespace DAL
 {
     public class UtilisateurDAO : AbsDAO<Utilisateur>
     {
-        public static new UtilisateurDAO Instance => new UtilisateurDAO();
+        private static readonly UtilisateurDAO instance = new UtilisateurDAO();
 
-        public UtilisateurDAO()
+        static UtilisateurDAO()
         {
+        }
+
+        private UtilisateurDAO()
+        {
+        }
+
+        public static UtilisateurDAO Instance
+        {
+            get
+            {
+                return instance;
+            }
         }
 
         public override bool delete(Utilisateur obj)
