@@ -23,6 +23,7 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByNxF6boskqziz8hWVjBuTJhXCPYlOsfE&sensor=false">
 </script>
 <script type="text/javascript">
+
     function setMap(address) {
         var geocoder;
         var map;
@@ -70,6 +71,13 @@
 
     }
 
+    function leafleftMap() {
+        
+        var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+        L.tileLayer.provider('OpenStreetMap.France').addTo(mymap);
+       
+    }
+
     function detailEvent(id) {
         $('#eventId').val(id);
         $('#event-detail-modal').html('<i class="fa fa-cog fa-spin  fa-2x fa-fw"></i> chargement...');
@@ -79,13 +87,14 @@
             dataType: 'json'
         }).done(function (response) {
             $('#event-detail-modal').html(response.Html);
+
             if (response.Inscrit) {
                 $('#desinscription').removeClass('hidden');
             } else {
                 $('#inscription').removeClass('hidden');
             }
-            setMap(response.Adresse);
-
+                
+            leafleftMap();
         }).fail(function (response) {
             $('#event-detail-modal').html('<div class="alert alert-danger">Une erreur s\'est produite lors du chargement des données</div>');
             console.log(response);
