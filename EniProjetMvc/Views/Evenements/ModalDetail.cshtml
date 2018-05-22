@@ -22,60 +22,28 @@
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByNxF6boskqziz8hWVjBuTJhXCPYlOsfE&sensor=false">
 </script>
+<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 <script type="text/javascript">
 
-    function setMap(address) {
-        var geocoder;
-        var map;
+    var mymap = null;
 
-        geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(-34.397, 150.644);
-        var myOptions = {
-            zoom: 8,
-            center: latlng,
-            mapTypeControl: true,
-            mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.DROPDOWN_MENU },
-            navigationControl: true,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        map = new google.maps.Map(document.getElementById("google-map"), myOptions);
-        if (geocoder) {
-            geocoder.geocode({ 'address': address }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
-                        map.setCenter(results[0].geometry.location);
-
-                        var infowindow = new google.maps.InfoWindow(
-                            {
-                                content: '<b>' + address + '</b>',
-                                size: new google.maps.Size(150, 50)
-                            });
-
-                        var marker = new google.maps.Marker({
-                            position: results[0].geometry.location,
-                            map: map,
-                            title: address
-                        });
-                        google.maps.event.addListener(marker, 'click', function () {
-                            infowindow.open(map, marker);
-                        });
-
-                    } else {
-                        $.notify("No results found", "error");
-                    }
-                } else {
-                    $.notify("Geocode was not successful for the following reason: " + status, "error");
-                }
-            });
-        }
-
-    }
-
-    function leafleftMap() {
+    function leafleftMap(Adresse) {
         
-        var mymap = L.map('mapid').setView([51.505, -0.09], 13);
-        L.tileLayer.provider('OpenStreetMap.France').addTo(mymap);
-       
+        var geocoder = new google.maps.Geocoder();
+        var address = Adresse;
+        geocoder.geocode({ 'address': address }, function (results, status) {
+
+            if (status == google.maps.GeocoderStatus.OK) {
+                var latitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+                mymap = L.map('mapid').setView([latitude, longitude], 13);
+                L.tileLayer.provider('OpenStreetMap.France').addTo(mymap);
+                var marker = L.marker([latitude, longitude]).addTo(mymap);
+                marker.bindPopup("<b>"+ Adresse +"</b>").openPopup();
+            }
+        });
+
     }
 
     function detailEvent(id) {
@@ -93,11 +61,67 @@
             } else {
                 $('#inscription').removeClass('hidden');
             }
-                
-            leafleftMap();
+            
+            leafleftMap(response.Adresse);
         }).fail(function (response) {
             $('#event-detail-modal').html('<div class="alert alert-danger">Une erreur s\'est produite lors du chargement des données</div>');
             console.log(response);
+        });
+    }
+
+    function searchParking() {
+        $('#bouton-parking').off('click');
+        $('#bouton-parking').on('click', function () {
+            var AdresseEvenement = $('#bouton-parking').data('adresse');
+
+            var AdresseUtilisateur = $('#adresse-utilisateur').val();
+
+            var geocoder = new google.maps.Geocoder();
+
+            var latEvent = null;
+            var lngEvent = null;
+            var latDepart = null;
+            var lngDepart = null;
+
+            geocoder.geocode({ 'address': AdresseUtilisateur }, function (results, status) {
+
+                if (status == google.maps.GeocoderStatus.OK) {
+                    latDepart = results[0].geometry.location.lat();
+                    lngDepart = results[0].geometry.location.lng();
+                    if (mymap != null) {
+                        var marker = L.marker([latDepart, lngDepart]).addTo(mymap);
+                        marker.bindPopup("<b>Depart</b>").openPopup();
+                    }
+
+                    geocoder.geocode({ 'address': AdresseEvenement }, function (results, status) {
+
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            latEvent = results[0].geometry.location.lat();
+                            lngEvent = results[0].geometry.location.lng();
+
+                            if (latDepart != null && lngDepart != null && latEvent != null && lngEvent != null) {
+       
+                               var RoutControl = new L.Routing.control({
+                                    waypoints: [
+                                      L.latLng(latDepart, lngDepart),
+                                      L.latLng(latEvent, lngEvent)
+                                    ]
+                                }).addTo(mymap);
+                                
+                            }
+                            else {
+                                $.notify("une erreur est survenu lors de la récuperation des adresses", "error");
+                            }
+                        }
+                        else {
+                            $.notify("L'adresse de l'événement est incorect", "error");
+                        }
+                    });
+                }
+                else {
+                    $.notify("Adresse de départ incorect", "error");
+                }
+            });
         });
     }
 

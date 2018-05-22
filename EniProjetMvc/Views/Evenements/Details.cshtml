@@ -110,7 +110,7 @@
                     <input class="form-control" id="adresse-utilisateur" type="text" placeholder="Adresse de départ" />
                 </div>
 
-                <button class="btn btn-sm btn-default">Rechercher</button>
+                <button class="btn btn-sm btn-default" id="bouton-parking" data-adresse="@Model.Adresse">Rechercher</button>
 
                 <div class="row" id="list-parking" style="padding-top:15px">
                     @RenderPage("~/Views/Evenements/Parking.cshtml")
@@ -118,13 +118,15 @@
                     @RenderPage("~/Views/Evenements/Parking.cshtml")
                 </div>
             </div>
-            <div id="google-map" style="height:500px">
+            <div id="google-map">
 
             </div>
             <div id="mapid" style="height:580px;"></div>
         </div>
 
-
-
     </div>
-
+    <script type="text/javascript">
+        $(function () {
+            searchParking();
+        });
+    </script>
