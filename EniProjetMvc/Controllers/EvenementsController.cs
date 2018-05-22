@@ -15,6 +15,9 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
 
 namespace EniProjetMvc.Controllers
 {
@@ -184,6 +187,15 @@ namespace EniProjetMvc.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
+        public ActionResult ListInscrit()
+        {
+            var user = db.GetFullUser(User.Identity.GetUserId());
+            var repo = DAOFactory.GetRepository<Evenement>(db) as EvenementDAO;
+            List<Evenement> list = repo.listAll(user.Utilisateur);
+            return View("Index", list);
+        }
+
         [HttpGet]
         public JsonResult AjaxListe(string term = null, int? statut = null)
         {
@@ -289,7 +301,7 @@ namespace EniProjetMvc.Controllers
 
             return Json(new { Error = !isOk });
         }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)

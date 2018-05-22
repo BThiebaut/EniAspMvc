@@ -54,6 +54,10 @@ namespace EniProjetMvc
                        "~/Scripts/jquery.iframe-transport.js",
                        "~/Scripts/jquery.fileupload.js"
                       ));
+
+            bundles.Add(new ScriptBundle("~/bundles/parking").Include(
+                       "~/Scripts/ParkingLocalizer.js"
+                      ));
         }
     }
 }

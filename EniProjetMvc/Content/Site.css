@@ -25,8 +25,7 @@ textarea {
 
 #wrapped-content.content-index {
     height: auto;
-    overflow: auto;
-      
+    overflow: auto;      
 }
 
 #wrapped-content.content-index .main-footer {
@@ -55,17 +54,18 @@ section.content {
 }
 
 section.content.content-index {
-    background-image : url('/Content/images/bg-index.jpg');
+    /*background-image : url('/Content/images/bg-index.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+        */
     height: auto;
     overflow: hidden;
     margin-bottom: 0;
 }
 
 section.content.content-index .text {
-    background-color: #fff;
+    background-color: #000;
     margin: 15px 0;
     box-shadow: 
         inset 0px 11px 4px -10px #666,
@@ -235,8 +235,8 @@ a.show-all {
 
 .site-pres {
     background: none;
-    text-shadow: 2px 2px 4px #000;
-    color: #fff;
+    /*text-shadow: 2px 2px 4px #000;*/
+    color: #000;
 }
 
 /* Utils */
@@ -283,4 +283,9 @@ a.show-all {
 
 .bg-white {
     background-color: #fff;
+}
+
+.bg-primary {
+    background-color: #3276b1;
+    color: #fff;
 }

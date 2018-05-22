@@ -68,6 +68,11 @@ namespace DAL
             return dbContext.Evenements.Include(e => e.Images).OrderBy(e => e.Statut).ToList();
         }
 
+        public List<Evenement> listAll(Utilisateur utilisateur)
+        {
+            return dbContext.Evenements.Include(e => e.Images).Where(e => e.Convives.Where(c => c.Id == utilisateur.Id).FirstOrDefault() != null).OrderBy(e => e.Statut).ToList();
+        }
+
         public override bool update(Evenement obj)
         {
             var isOk = true;
