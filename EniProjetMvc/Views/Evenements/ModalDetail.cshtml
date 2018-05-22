@@ -24,10 +24,12 @@
 </script>
 <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+@Scripts.Render("~/bundles/parking")
 <script type="text/javascript">
 
     var mymap = null;
-
+    var detailsEvent = null;
+    var parkingList = null;
     function leafleftMap(Adresse) {
         
         var geocoder = new google.maps.Geocoder();
@@ -61,12 +63,41 @@
             } else {
                 $('#inscription').removeClass('hidden');
             }
-            
+            detailsEvent = response;
             leafleftMap(response.Adresse);
         }).fail(function (response) {
             $('#event-detail-modal').html('<div class="alert alert-danger">Une erreur s\'est produite lors du chargement des données</div>');
             console.log(response);
         });
+    }
+
+    function loadParkingList(latDep, longDep, latArriv, longArriv) {
+        if (detailsEvent !== null) {
+            // Récupère le contenus html des parkings
+            $('#list-parking').html('<i class="fa fa-spinner fa-spin"></i> Chargement...');
+            $.ajax({
+                url: '/Content/template/Parking.html',
+                method: 'get'
+            }).done(function (response) {
+                console.log(response);
+                
+                var parking = new ParkingLocalizer(latDep, longDep, latArriv, longArriv, 'http://data.citedia.com/r1/parks');
+                parking.init(detailsEvent.HeureOuverture, detailsEvent.HeureFermeture, detailsEvent.Duree, function (parkings) {
+                    parkingList = parkings;
+                    var strHtml = '';
+                    $.each(parkings, function (index, data) {
+                        var template = response;
+                        // TODO
+                    });
+                    
+                });
+
+            }).fail(function (response) {
+                $.notify('Une erreur s\'est produite lors du chargement des parkings', 'warn');
+            });
+        } else {
+            console.error('loadParkingList doit être appelé après le chargement des détails');
+        }
     }
 
     function searchParking() {
@@ -100,7 +131,7 @@
                             lngEvent = results[0].geometry.location.lng();
 
                             if (latDepart != null && lngDepart != null && latEvent != null && lngEvent != null) {
-       
+                                loadParkingList(latDepart, lngDepart, latEvent, lngEvent);
                                var RoutControl = new L.Routing.control({
                                     waypoints: [
                                       L.latLng(latDepart, lngDepart),

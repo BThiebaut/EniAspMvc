@@ -4,6 +4,8 @@
     this._latArrive = lat_arrive;
     this._longArrive = long_arrive;
     this._apiUrl = url;
+    this._parkingList = null;
+    this._parkingList3 = null;
 
     this._oDataApi = {};
 
@@ -15,6 +17,10 @@
     this.updateCoordDepart = function (lat_depart, long_depart) {
         _self._latDepart = lat_depart;
         _self._longDepart = long_depart;
+    };
+
+    this.get3ParkingsLoaded = function () {
+        return _self._parkingList3;
     };
 
     //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -80,8 +86,6 @@
 
             var row = banana.split(';');
             if (row.length > 1) {
-                console.log(banana);
-                console.log(row.length);
                 var o = {};
                 $.each(row, function(idx, data){
                     if (index == 0) {
@@ -117,7 +121,6 @@
                     $.each(response.features.features, function (index, data) {
                         _self._oDataApi[data.id].features = data;
                     });
-                    console.log(_self._oDataApi);
                     callback();
                 } else {
                     throw "Erreur : aucune réponse de l'api";
@@ -189,7 +192,7 @@
                 */
             }
         });
-
+        _self._parkingList = result;
         return result;
     };
 
@@ -311,8 +314,7 @@
             }
         });
 
-
-
+        _self._parkingList3 = parkings;
         return parkings;
     };
 

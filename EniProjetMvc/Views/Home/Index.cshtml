@@ -45,15 +45,7 @@
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByNxF6boskqziz8hWVjBuTJhXCPYlOsfE&sensor=false">
 </script>
-@Scripts.Render("~/bundles/parking")
 <script type="text/javascript">
-
-    /* EXEMPLE UTILISATION OBJET ParkingLocalizer, A SUPPRIMER APRES INTEGRATION */
-    var parking = new ParkingLocalizer(48.614220, -1.978917, 48.038921, -1.692392, 'http://data.citedia.com/r1/parks');
-    parking.init('08:00', '15:00', function (parkings) {
-        console.log(parkings);
-    });
-
     function setMap(address) {
         var geocoder;
         var map;

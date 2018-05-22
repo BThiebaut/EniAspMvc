@@ -138,8 +138,8 @@ namespace EniProjetMvc.Controllers
             var vm = new EvenementVM(db);
             vm.Evenement = evenement;
             vm.selectedTheme = evenement.Theme.Id;
-            
-            return View("Create",vm);
+
+            return View("Create", vm);
         }
 
         // POST: Evenements/Edit/5
@@ -234,7 +234,15 @@ namespace EniProjetMvc.Controllers
                 isInscrit = repo.HasInscription(evenement, user.Utilisateur.Id);
             }
 
-            var res = new { Html = view, Adresse = evenement.Adresse, Inscrit = isInscrit };
+            var res = new
+            {
+                Html = view,
+                Adresse = evenement.Adresse,
+                Inscrit = isInscrit,
+                Duree = evenement.Duree,
+                HeureOuverture = evenement.HeureOuverture,
+                HeureFermeture = evenement.HeureFermeture
+            };
             return Json(res, JsonRequestBehavior.AllowGet);
         }
 
@@ -301,7 +309,7 @@ namespace EniProjetMvc.Controllers
 
             return Json(new { Error = !isOk });
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
