@@ -44,8 +44,9 @@ namespace EniProjetMvc
                       "~/Scripts/bootstrap-clockpicker.min.js",
                       "~/Scripts/notify.min.js",
                       "~/Scripts/leaflet.js",
-                      "~/Scripts/leaflet-providers.js",
                       "~/Scripts/leaflet-geosearch-min.js",
+                      "~/Scripts/leaflet-providers.js",
+                      "~/Scripts/leaflet-routeboxer.js",
                       "~/Scripts/custom.js"
                       ));
 
