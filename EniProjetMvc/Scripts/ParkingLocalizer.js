@@ -148,6 +148,7 @@
 
         var k = Object.keys(parkEvent);
         var sortedk = k.sort();
+        sortedk = sortedk.reverse();
         var sortedPark = {};
         $.each(sortedk, function (index, data) {
             var o = parkEvent[data];
@@ -157,7 +158,8 @@
         });
 
         k = Object.keys(depEvent);
-        sortedk = k.sort();
+        sortedk = k.sort().reverse();
+        sortedk = sortedk.reverse();
         var sortedDep = {};
         $.each(sortedk, function (index, data) {
             var o = depEvent[data];
@@ -206,7 +208,6 @@
             method: 'get'
         }).done(function (response) {
             var cvsdata = _self.CSVtoArray(response);
-
             // Récupère les horaires de chacun des parkings données
             $.each(parkings, function (index, data) {
                 var tarifIdx = cvsdata.map(function (a) { return a.Parking; }).indexOf(data.id);
@@ -219,7 +220,7 @@
                     horaires.m24h = [];
                     horaires.p24h = [];
 
-                    if (tp24h.length > 0 && tad.length > 0) {
+                    if (tp24h !== null && tad !== null && tp24h.length > 0 && tad.length > 0) {
                         tp24h = tp24h[1];
                         tad = tad[1];
                         // Extraction des horaires tp24h
@@ -278,7 +279,13 @@
         heureOuverture = parseInt(heureOuverture.replace(':', '.'));
         heureFermeture = parseInt(heureFermeture.replace(':', '.'));
         $.each(parkings, function (idex, data) {
-            if (heureOuverture && heureFermeture && heureOuverture != heureFermeture) {
+            if (heureOuverture &&
+                heureFermeture &&
+                heureOuverture != heureFermeture &&
+                typeof data.horaires != 'undefined' &&
+                data.horaires.m24h !== null &&
+                data.horaires.m24h.length > 0)
+            {
                 // Moins de 24h
                 var firstH = data.horaires.m24h[0];
                 var lastH = data.horaires.m24h[1];
@@ -304,7 +311,7 @@
             } else {
                 // Plus de 24h
                 var duree = nbJour * 24;
-                if (nbJour) {
+                if (nbJour && typeof data.horaires != 'undefined' && data.horaires.p24h !== null) {
                     if (data.horaires.p24h.multiplier) {
                         var factor = duree / data.horaires.p24h.multiplier;
                     } else factor = duree;

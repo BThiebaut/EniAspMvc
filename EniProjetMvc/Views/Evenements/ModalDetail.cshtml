@@ -99,9 +99,13 @@
                             template = template.replace('{nbplace}', data.parkInformation.free);
                             template = template.replace('{nbplacetotal}', data.parkInformation.max);
 
-                            var tarifs = data.tarifsBrut.Tarifs.replace('//', '<br/>');
+                            var tarifs = "Inconnus";
+                            if (typeof data.tarifsBrut != 'undefined' && data.tarifsBrut.Tarifs !== null) {
+                                tarifs = data.tarifsBrut.Tarifs.replace('//', '<br/>');
+                            }
                             template = template.replace('{tarif}', tarifs);
-                            template = template.replace('{coutestime}', data.coutEstime + '€');
+                            var coutestime = data.coutEstime ? data.coutEstime + '€' : 'Inconnus';
+                            template = template.replace('{coutestime}', coutestime);
                             var iDiv = document.createElement('div');
                             iDiv.id = 'parking-'+data.id;
                             $('#list-parking').append(iDiv);
@@ -109,7 +113,6 @@
 
                             L.geoJSON(data.features, {
                                 pointToLayer: function (feature, latlng) {
-                                    console.log(latlng);
                                     return L.marker(latlng, { icon: parkingIcon });
                                 }
                             }).addTo(mymap);
@@ -226,7 +229,6 @@
             $(this).addClass('disabled');
             var self = this;
             var isAuth = '@User.Identity.IsAuthenticated';
-            console.log(isAuth);
             var eventId = $('#eventId').val();
             var datas = { idEvenement: eventId };
             $.ajax({
