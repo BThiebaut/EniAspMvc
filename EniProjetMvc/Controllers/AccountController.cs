@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using EniProjetMvc.Models;
 using BO;
 using DAL;
+using EniProjetMvc.Extensions;
 
 namespace EniProjetMvc
     .Controllers
@@ -93,6 +94,84 @@ namespace EniProjetMvc
                     ModelState.AddModelError("", "Tentative de connexion non valide.");
                     return View(model);
             }
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public JsonResult AjaxLoginRender()
+        {
+            ViewBag.ReturnUrl = "";
+            var view = ViewRenderer.RenderPartialView("~/Views/Account/Login.cshtml", null, ControllerContext);
+            var res = new { Html = view };
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> AjaxLoginRender(LoginViewModel model, string returnUrl)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return Json(new { Erreur = true, Message = "Mauvais identifiant ou mot de passe" }, JsonRequestBehavior.AllowGet);
+            }
+
+            // Ceci ne comptabilise pas les échecs de connexion pour le verrouillage du compte
+            // Pour que les échecs de mot de passe déclenchent le verrouillage du compte, utilisez shouldLockout: true
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return Json(new { Erreur = false }, JsonRequestBehavior.AllowGet);
+                case SignInStatus.LockedOut:
+                    return Json(new { Erreur = true }, JsonRequestBehavior.AllowGet);
+                case SignInStatus.RequiresVerification:
+                    return Json(new { Erreur = true }, JsonRequestBehavior.AllowGet);
+                case SignInStatus.Failure:
+                default:
+                    return Json(new { Erreur = true, Message = "Tentative de connexion non valide." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public JsonResult AjaxRegisterRender()
+        {
+            ViewBag.ReturnUrl = "";
+            var view = ViewRenderer.RenderPartialView("~/Views/Account/Register.cshtml", null, ControllerContext);
+            var res = new { Html = view };
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<JsonResult> AjaxRegisterRender(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var utilisateur = new Utilisateur();
+                utilisateur.Adresse = model.Adresse;
+
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Utilisateur = utilisateur };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                    // Pour plus d'informations sur l'activation de la confirmation du compte et la réinitialisation du mot de passe, consultez http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Envoyer un message électronique avec ce lien
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    // await UserManager.SendEmailAsync(user.Id, "Confirmez votre compte", "Confirmez votre compte en cliquant <a href=\"" + callbackUrl + "\">ici</a>");
+
+                    return Json(new { Error = false }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new { Error = true }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { Error = true }, JsonRequestBehavior.AllowGet);
         }
 
         //
