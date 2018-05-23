@@ -126,5 +126,22 @@ namespace DAL
             return this.update(obj);
         }
 
+        public void AutoUpdateStatut()
+        {
+            var events = this.listAll();
+            var today = DateTime.Now;
+            foreach (var item in events)
+            {
+                if (item.DateFin < today && item.Statut != StatutEvenement.ANNULE)
+                {
+                    item.Statut = StatutEvenement.ARCHIVE;
+                    this.update(item);
+                }else if (item.DateDebut < today && item.DateFin > today && item.Statut != StatutEvenement.ANNULE)
+                {
+                    item.Statut = StatutEvenement.EN_COURS;
+                }
+            }
+        }
+
     }
 }

@@ -323,6 +323,28 @@ namespace EniProjetMvc.Controllers
             return Json(new { Error = !isOk });
         }
 
+        [HttpGet]
+        [Authorize]
+        public JsonResult AjaxArchiveAuto()
+        {
+            var repo = DAOFactory.GetRepository<Evenement>(db) as EvenementDAO;
+            var error = false;
+            var errorMsg = "";
+
+            try
+            {
+                repo.AutoUpdateStatut();
+            }catch(Exception e)
+            {
+                error = true;
+                errorMsg = e.Message;
+            }
+            
+            return Json(new { Error = error, Message = errorMsg }, JsonRequestBehavior.AllowGet);
+        }
+
+        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

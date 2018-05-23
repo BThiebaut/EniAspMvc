@@ -3,16 +3,15 @@
 
 @{
     ViewBag.Title = "Liste des événements";
-    if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
-    {
-        ViewBag.btnNav = new List<BtnNav>();
-        var btnNav = new BtnNav { Url = @Url.Action("Create", "Evenements"), Text = "Nouvel événement", Icone = "fa fa-plus-circle", Color = "success" };
-        ViewBag.btnNav.Add(btnNav);
-    }
+    ViewBag.btnNav = new List<BtnNav>();
+    var btnNav = new BtnNav { Url = @Url.Action("Create", "Evenements"), Text = "Nouvel événement", Icone = "fa fa-plus-circle", Color = "success", AdminOnly = true };
+    var btnNavArchive = new BtnNav { Url = @Url.Action("AjaxArchiveAuto", "Evenements"), Text = "Archivage semi-auto", Icone = "fa fa-folder", Color = "warning", Id = "archive-events", AdminOnly = true };
+    ViewBag.btnNav.Add(btnNav);
+    ViewBag.btnNav.Add(btnNavArchive);
 }
 
 <p id="liste-evenements">
-  
+
 </p>
 
 @RenderPage("~/Views/Evenements/ModalDetail.cshtml")
@@ -82,6 +81,43 @@
                 });
                 console.log(response);
             });
+
+
+            $('#archive-events').off('click');
+            $('#archive-events').on('click', function (e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+
+                swal({
+                    title: "Confirmation",
+                    text: "Voulez-vous mettre à jours les statuts des événements automatiquement ?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: url,
+                            type: 'GET',
+                        }).done(function (response) {
+                            if (!response.Error) {
+                                $.notify("L'archivage semi-automatique s'est bien déroulé", "success");
+                                loadListEvents();
+                            }
+                            else {
+                                $.notify("Une erreur est survenue lors l'archivage semi-automatique", "error");
+                                console.log(response);
+                            }
+                        });
+
+
+                    }
+                });
+
+
+            });
+
         });
     }
     loadListEvents();
@@ -120,10 +156,6 @@
                         console.log(response);
                     }
                 });
-
-
-            } else {
-                //ne rien faire
             }
         });
     }

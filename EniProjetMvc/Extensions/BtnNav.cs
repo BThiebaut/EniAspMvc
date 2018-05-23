@@ -12,6 +12,14 @@ namespace EniProjetMvc.Extensions
         public string Icone { get; set; }
         public string Text { get; set; }
         public string Color { get; set; }
+        public string Id { get; set; }
+        public List<string> Classes { get; set; }
+        public bool AdminOnly { get; set; }
+
+        public BtnNav()
+        {
+            AdminOnly = false;
+        }
 
     }
 }

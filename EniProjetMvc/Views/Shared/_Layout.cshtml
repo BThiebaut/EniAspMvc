@@ -52,7 +52,16 @@
                 {
                     foreach (BtnNav item in ViewBag.btnNav)
                     {
-                        <a href="@item.Url" class="btn btn-sm btn-@item.Color"><i class="@item.Icone"></i> @item.Text</a>
+                        var display = true;
+                        if (item.AdminOnly)
+                        {
+                            display = User.Identity.IsAuthenticated && User.IsInRole("admin");
+                        }
+                        if (display)
+                        {
+                            var classes = item.Classes != null ? string.Join(" ", item.Classes) : "";
+                            <a href="@item.Url" id="@item.Id" class="@classes btn btn-sm btn-@item.Color"><i class="@item.Icone"></i> @item.Text</a>
+                        }
                     }
                 }
             </div>
