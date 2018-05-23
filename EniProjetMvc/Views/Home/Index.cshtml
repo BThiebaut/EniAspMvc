@@ -45,15 +45,7 @@
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByNxF6boskqziz8hWVjBuTJhXCPYlOsfE&sensor=false">
 </script>
-@Scripts.Render("~/bundles/parking")
 <script type="text/javascript">
-
-    /* EXEMPLE UTILISATION OBJET ParkingLocalizer, A SUPPRIMER APRES INTEGRATION */
-    var parking = new ParkingLocalizer(48.614220, -1.978917, 48.038921, -1.692392, 'http://data.citedia.com/r1/parks');
-    parking.init('08:00', '15:00', function (parkings) {
-        console.log(parkings);
-    });
-
     function setMap(address) {
         var geocoder;
         var map;
@@ -101,21 +93,8 @@
 
     }
 
-    $(function () {
-        // En cours
-        $.ajax({
-            url: '@Url.Action("AjaxListeHome", "Evenements")?statut=@StatutEvenement.EN_COURS&limit=4',
-            type: 'GET',
-            dataType: 'json',
-        }).done(function (response) {
-            $('#liste-evenements-encours').html(response.Html);
-        }).fail(function (response) {
-            swal("Une erreur est survenue lors du rechargement de la page", {
-                icon: "error",
-            });
-            console.log(response);
-        });
-
+    // Règle le soucis d'utilisation multithread du context db
+    function loadEventAVenir() {
         // A venir
         $.ajax({
             url: '@Url.Action("AjaxListeHome", "Evenements")?statut=@StatutEvenement.A_VENIR&limit=4',
@@ -129,6 +108,26 @@
             });
             console.log(response);
         });
+    }
+
+    $(function () {
+        // En cours
+        $.ajax({
+            url: '@Url.Action("AjaxListeHome", "Evenements")?statut=@StatutEvenement.EN_COURS&limit=4',
+            type: 'GET',
+            dataType: 'json',
+        }).done(function (response) {
+            $('#liste-evenements-encours').html(response.Html);
+            loadEventAVenir();
+        }).fail(function (response) {
+            swal("Une erreur est survenue lors du rechargement de la page", {
+                icon: "error",
+            });
+            console.log(response);
+            loadEventAVenir();
+        });
+
+   
 
     });
 

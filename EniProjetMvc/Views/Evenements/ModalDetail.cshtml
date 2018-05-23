@@ -23,12 +23,14 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByNxF6boskqziz8hWVjBuTJhXCPYlOsfE&sensor=false">
 </script>
 
+@Scripts.Render("~/bundles/parking")
+
 <script type="text/javascript">
-
-    var mymap = null;
-
     var DepartMarker = null;
 
+    var mymap = null;
+    var detailsEvent = null;
+    var parkingList = null;
     function leafleftMap(Adresse) {
         
         var geocoder = new google.maps.Geocoder();
@@ -62,12 +64,68 @@
             } else {
                 $('#inscription').removeClass('hidden');
             }
-            
+            detailsEvent = response;
             leafleftMap(response.Adresse);
         }).fail(function (response) {
             $('#event-detail-modal').html('<div class="alert alert-danger">Une erreur s\'est produite lors du chargement des données</div>');
             console.log(response);
         });
+    }
+
+    function loadParkingList(latDep, longDep, latArriv, longArriv) {
+        if (detailsEvent !== null) {
+            try {
+                // Récupère le contenus html des parkings
+                $('#list-parking').html('<i class="fa fa-spinner fa-spin"></i> Chargement...');
+                $.ajax({
+                    url: '/Content/template/Parking.html',
+                    method: 'get'
+                }).done(function (response) {
+                    var parking = new ParkingLocalizer(latDep, longDep, latArriv, longArriv, 'http://data.citedia.com/r1/parks');
+                    parking.init(detailsEvent.HeureOuverture, detailsEvent.HeureFermeture, detailsEvent.Duree, function (parkings) {
+                        parkingList = parkings;
+                        var strHtml = '';
+                        $('#list-parking').html('');
+                        var parkingIcon = L.icon({
+                            iconUrl: '/Content/images/icon-parking.png',
+                            iconSize: [32, 32],
+                            iconAnchor: [16, 37],
+                            popupAnchor: [0, -28]
+                        });
+                        console.log(parkings);
+                        $.each(parkings, function (index, data) {
+                            var template = response;
+                            template = template.replace('{adresse}', data.id);
+                            template = template.replace('{nbplace}', data.parkInformation.free);
+                            template = template.replace('{nbplacetotal}', data.parkInformation.max);
+
+                            var tarifs = data.tarifsBrut.Tarifs.replace('//', '<br/>');
+                            template = template.replace('{tarif}', tarifs);
+                            template = template.replace('{coutestime}', data.coutEstime + '€');
+                            var iDiv = document.createElement('div');
+                            iDiv.id = 'parking-'+data.id;
+                            $('#list-parking').append(iDiv);
+                            $('#parking-' + data.id).html(template);
+
+                            L.geoJSON(data.features, {
+                                pointToLayer: function (feature, latlng) {
+                                    console.log(latlng);
+                                    return L.marker(latlng, { icon: parkingIcon });
+                                }
+                            }).addTo(mymap);
+                        });
+                    
+                    });
+
+                }).fail(function (response) {
+                    $.notify('Une erreur s\'est produite lors du chargement des parkings', 'warn');
+                });
+            }catch(e){
+                $.notify(e, 'warn');
+            }
+        } else {
+            console.error('loadParkingList doit être appelé après le chargement des détails');
+        }
     }
 
     function searchParking() {
@@ -104,14 +162,13 @@
                             lngEvent = results[0].geometry.location.lng();
 
                             if (latDepart != null && lngDepart != null && latEvent != null && lngEvent != null) {
-       
+                                loadParkingList(latDepart, lngDepart, latEvent, lngEvent);
                                var RoutControl = new L.Routing.control({
                                     waypoints: [
                                       L.latLng(latDepart, lngDepart),
                                       L.latLng(latEvent, lngEvent)
                                     ]
                                 }).addTo(mymap);
-                                
                             }
                             else {
                                 $.notify("une erreur est survenu lors de la récuperation des adresses", "error");
