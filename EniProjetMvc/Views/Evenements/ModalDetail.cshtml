@@ -96,7 +96,8 @@
                             iconAnchor: [16, 37],
                             popupAnchor: [0, -28]
                         });
-                        console.log(parkings);
+                        var geoData = null;
+
                         $.each(parkings, function (index, data) {
                             var template = response;
                             template = template.replace('{adresse}', data.id);
@@ -120,6 +121,23 @@
                                     return L.marker(latlng, { icon: parkingIcon });
                                 }
                             }).addTo(mymap);
+                            if (geoData === null && data.features.geometry !== null) {
+                                geoData = { lat: data.features.geometry.coordinates[1], long: data.features.geometry.coordinates[0] };
+                            }
+                        });
+
+                        var RouteControl = new L.Routing.control({
+                            waypoints: [
+                                L.latLng(latDep, longDep),
+                                L.latLng(geoData.lat, geoData.long)
+                            ],
+                            createMarker: function (i, wp) {
+                                return null;
+                            },
+                            routeWhileDragging: false
+                        }).addTo(mymap)
+                        .on('routingerror', function (e) {
+                            $.notify("impossible d'établir l'itinéraire", "error");
                         });
                     
                     });
@@ -170,17 +188,7 @@
 
                             if (latDepart != null && lngDepart != null && latEvent != null && lngEvent != null) {
                                 loadParkingList(latDepart, lngDepart, latEvent, lngEvent);
-                                try{
-                                    var RouteControl = new L.Routing.control({
-                                        waypoints: [
-                                          L.latLng(latDepart, lngDepart),
-                                          L.latLng(latEvent, lngEvent)
-                                        ],
-                                    }).addTo(mymap);
-                                }
-                                catch(e){
-                                    $.notify("impossible d'établir l'itinéraire", "error");
-                                }
+                                
                                 
                                 
                                
