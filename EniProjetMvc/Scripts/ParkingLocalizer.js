@@ -110,7 +110,7 @@
         return new Promise(function () {
             var self = this;
             $.ajax({
-                url: _self._apiUrl,
+                url: _self._apiUrl + '?crs=EPSG:4326',
                 method: 'get'
             }).done(function (response) {
                 // Regroupe les résultas
