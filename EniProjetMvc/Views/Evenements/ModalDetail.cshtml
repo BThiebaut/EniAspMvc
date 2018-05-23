@@ -27,7 +27,7 @@
 
 <script type="text/javascript">
     var DepartMarker = null;
-
+    var RouteControl = null;
     var mymap = null;
     var detailsEvent = null;
     var parkingList = null;
@@ -125,8 +125,11 @@
                                 geoData = { lat: data.features.geometry.coordinates[1], long: data.features.geometry.coordinates[0] };
                             }
                         });
-
-                        var RouteControl = new L.Routing.control({
+                        if (RouteControl !== null) {
+                            RouteControl.spliceWaypoints(0, 2);
+                            $('.leaflet-routing-container').remove();
+                        }
+                        RouteControl = new L.Routing.control({
                             waypoints: [
                                 L.latLng(latDep, longDep),
                                 L.latLng(geoData.lat, geoData.long)
@@ -188,10 +191,6 @@
 
                             if (latDepart != null && lngDepart != null && latEvent != null && lngEvent != null) {
                                 loadParkingList(latDepart, lngDepart, latEvent, lngEvent);
-                                
-                                
-                                
-                               
                             }
                             else {
                                 $.notify("une erreur est survenu lors de la récuperation des adresses", "error");
