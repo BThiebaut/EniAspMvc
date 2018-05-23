@@ -103,6 +103,21 @@ section.content.content-index .text {
     border-top: 1px solid #eee;
 }
 
+/* Filtres event */
+#filter-event form {
+    display: block;
+    width: 80%;
+    margin: 10px auto 20px auto;
+}
+
+#filter-event #filter-action {
+    margin-top: 25px;
+}
+
+#filter-event form select {
+    width: 100%;
+}
+
 /* style additionnel */
 h2{
     text-align: center;

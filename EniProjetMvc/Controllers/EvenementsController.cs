@@ -189,33 +189,32 @@ namespace EniProjetMvc.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult ListInscrit()
+        public ActionResult ListInscrit(string search = null, Theme theme = null, StatutEvenement? statut = null)
         {
             var user = db.GetFullUser(User.Identity.GetUserId());
             var repo = DAOFactory.GetRepository<Evenement>(db) as EvenementDAO;
-            List<Evenement> list = repo.listAll(user.Utilisateur);
+            var listTheme = DAOFactory.GetRepository<Theme>(db).listAll();
+            List<Evenement> list = repo.listAll(user.Utilisateur, search, theme, statut);
+
+            ViewBag.listTheme = listTheme;
             var view = ViewRenderer.RenderPartialView("~/Views/Evenements/ListOrganizer.cshtml", list, ControllerContext);
             view = Regex.Replace(view, @"[\r\n]+", "");
             view = view.Replace("                        ", "");
-            if (list.Count == 0)
-            {
-                view = "<div class=\"alert alert-warning\">Aucun événement à afficher</div>";
-            }
             var res = new { Html = view };
             return Json(res, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        public JsonResult AjaxListe(string term = null, int? statut = null)
+        public JsonResult AjaxListe(string search = null, Theme theme = null, StatutEvenement? statut = null)
         {
-            var list = DAOFactory.GetRepository<Evenement>(db).listAll();
+            var repo = DAOFactory.GetRepository<Evenement>(db) as EvenementDAO;
+            var list = repo.listAll(null, search, theme, statut);
+            var listTheme = DAOFactory.GetRepository<Theme>(db).listAll();
+            
+            ViewBag.listTheme = listTheme;
             var view = ViewRenderer.RenderPartialView("~/Views/Evenements/ListOrganizer.cshtml", list, ControllerContext);
             view = Regex.Replace(view, @"[\r\n]+", "");
             view = view.Replace("                        ", "");
-            if (list.Count == 0)
-            {
-                view = "<div class=\"alert alert-warning\">Aucun événement à afficher</div>";
-            }
             var res = new { Html = view };
             return Json(res, JsonRequestBehavior.AllowGet);
         }

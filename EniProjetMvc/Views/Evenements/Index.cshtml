@@ -28,14 +28,54 @@
         }
     }
 
-    function loadListEvents() {
+    var isModeMyEvents = '@isModeMyEvents';
+
+    function submitFilters() {
+        var formData = $('#filter-form').serializeArray();
+        loadListEvents(formData);
+    }
+
+    function registerFilterEvents() {
+        $('#filter-action').off('click');
+        $('#filter-action').on('click', function () {
+            submitFilters();
+        });
+
+        $('#filter-form').off('submit');
+        $('#filter-form').on('submit', function (e) {
+            e.preventDefault();
+            submitFilters();
+        });
+    }
+
+    function loadListEvents(filters) {
+        var filterdata = '';
+        console.log(filters);
+        if (typeof filters != 'undefined' && filters !== null && filters.length > 0) {
+            filterdata = '?';
+            $.each(filters, function (key, data) {
+                console.log(data);
+                filterdata += data.name + '=' + data.value + '&';
+            });
+
+            filterdata = filterdata.substr(0, filterdata.length - 1);
+        }
+
         $(function () {
             $.ajax({
-                url: '@routeListe',
+                url: '@routeListe' + filterdata,
                 type: 'GET',
                 dataType: 'json',
             }).done(function (response) {
                 $('#liste-evenements').html(response.Html);
+                registerFilterEvents();
+                // Remplis les filtres actifs
+                if (typeof filters != 'undefined' && filters !== null && filters.length > 0) {
+                    $.each(filters, function (idx, data) {
+                        $('input[name="' + data.name + '"]').val(data.value);
+                        $('select[name="' + data.name + '"]').val(data.value);
+                    });
+                }
             }).fail(function (response) {
                 swal("Une erreur est survenue lors du rechargement de la page", {
                     icon: "error",
@@ -45,6 +85,7 @@
         });
     }
     loadListEvents();
+
 
     function deleteEvent(self) {
         swal({

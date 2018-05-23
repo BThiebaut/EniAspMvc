@@ -74,6 +74,31 @@ namespace DAL
             return dbContext.Evenements.Include(e => e.Images).Where(e => events.Contains(e.Id)).OrderBy(e => e.Statut).ToList();
         }
 
+        public List<Evenement> listAll(Utilisateur utilisateur = null, string search = null, Theme theme = null, StatutEvenement? statut = null)
+        {
+            var query = dbContext.Evenements.Include(e => e.Images);
+            if (utilisateur != null)
+            {
+                var events = utilisateur.Evenements.Select(o => o.Id).ToList();
+                query = query.Where(e => events.Contains(e.Id));
+            }
+
+            if (search != null && search != "")
+            {
+                query = query.Where(e => e.Intitule.ToLower() == search.Trim().ToLower());
+            }
+            if (theme != null && theme.Id != 0)
+            {
+                query = query.Where(e => e.Theme.Id == theme.Id);
+            }
+            if(statut != null && statut.HasValue)
+            {
+                query = query.Where(e => e.Statut == statut.Value);
+            }
+
+            return query.OrderBy(e => e.Statut).ToList();
+        }
+
         public override bool update(Evenement obj)
         {
             var isOk = true;
