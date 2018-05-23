@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DAL
@@ -85,7 +86,8 @@ namespace DAL
 
             if (search != null && search != "")
             {
-                query = query.Where(e => e.Intitule.ToLower() == search.Trim().ToLower());
+                search = search.Trim().ToLower();
+                query = query.Where(e => e.Intitule.Trim().ToLower().Contains(search));
             }
             if (theme != null && theme.Id != 0)
             {
