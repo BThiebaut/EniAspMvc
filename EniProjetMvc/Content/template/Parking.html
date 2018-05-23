@@ -6,26 +6,36 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <table class="table table-bordered">
-                    <tbody>
-                        <tr>
-                            <td>Nombre de place(s) libre</td>
-                            <td>{nbplace}</td>
-                        </tr>
-                        <tr>
-                            <td>Nombre de places total</td>
-                            <td>{nbplacetotal}</td>
-                        </tr>
-                        <tr>
-                            <td>Tarif horraire</td>
-                            <td>{tarif}</td>
-                        </tr>
-                        <tr>
-                            <td>Coût estimé</td>
-                            <td>{coutestime}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="row">
+                    <div class="col-md-6">
+                        <b>Nombre de place(s) libre</b>
+                    </div>
+                    <div class="col-md-6">
+                        {nbplace}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <b>Nombre de places total</b>
+                    </div>
+                    <div class="col-md-6">
+                        {nbplacetotal}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <b>Tarif horraire</b><br/>
+                        {tarif}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <b>Coût estimé</b>
+                    </div>
+                    <div class="col-md-6">
+                        {coutestime}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

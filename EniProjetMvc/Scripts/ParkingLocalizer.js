@@ -148,7 +148,6 @@
 
         var k = Object.keys(parkEvent);
         var sortedk = k.sort();
-        sortedk = sortedk.reverse();
         var sortedPark = {};
         $.each(sortedk, function (index, data) {
             var o = parkEvent[data];
@@ -158,8 +157,7 @@
         });
 
         k = Object.keys(depEvent);
-        sortedk = k.sort().reverse();
-        sortedk = sortedk.reverse();
+        sortedk = k.sort();
         var sortedDep = {};
         $.each(sortedk, function (index, data) {
             var o = depEvent[data];

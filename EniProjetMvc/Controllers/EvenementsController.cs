@@ -226,11 +226,11 @@ namespace EniProjetMvc.Controllers
             var repo = DAOFactory.GetRepository<Utilisateur>(db) as UtilisateurDAO;
 
             var isInscrit = false;
-
+            ApplicationUser user = null;
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.Identity.GetUserId();
-                var user = db.GetFullUser(userId);
+                user = db.GetFullUser(userId);
                 isInscrit = repo.HasInscription(evenement, user.Utilisateur.Id);
             }
 
@@ -241,7 +241,8 @@ namespace EniProjetMvc.Controllers
                 Inscrit = isInscrit,
                 Duree = evenement.Duree,
                 HeureOuverture = evenement.HeureOuverture,
-                HeureFermeture = evenement.HeureFermeture
+                HeureFermeture = evenement.HeureFermeture,
+                UserAdresse = user != null ? user.Utilisateur.Adresse : ""
             };
             return Json(res, JsonRequestBehavior.AllowGet);
         }

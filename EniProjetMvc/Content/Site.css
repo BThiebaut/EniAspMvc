@@ -92,6 +92,17 @@ section.content.content-index .text {
     margin: 1% auto 7% auto;
 }
 
+/* Modal inscription */
+
+#parking .box-body .row {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#parking .box-body .row + .row {
+    border-top: 1px solid #eee;
+}
+
 /* style additionnel */
 h2{
     text-align: center;

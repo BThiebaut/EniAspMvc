@@ -66,6 +66,10 @@
             }
             detailsEvent = response;
             leafleftMap(response.Adresse);
+            // Pré-remplis les champs avec l'utilisateur connecté
+            if (response.UserAdresse) {
+                $('#adresse-utilisateur').val(response.UserAdresse);
+            }
         }).fail(function (response) {
             $('#event-detail-modal').html('<div class="alert alert-danger">Une erreur s\'est produite lors du chargement des données</div>');
             console.log(response);
@@ -101,7 +105,7 @@
 
                             var tarifs = "Inconnus";
                             if (typeof data.tarifsBrut != 'undefined' && data.tarifsBrut.Tarifs !== null) {
-                                tarifs = data.tarifsBrut.Tarifs.replace('//', '<br/>');
+                                tarifs = data.tarifsBrut.Tarifs.replace(/\/\//g, '<br/>');
                             }
                             template = template.replace('{tarif}', tarifs);
                             var coutestime = data.coutEstime ? data.coutEstime + '€' : 'Inconnus';
