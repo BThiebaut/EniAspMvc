@@ -15,26 +15,38 @@
   
 </p>
 
-@RenderPage("~/Views/Evenements/ModalDetail.cshtml");
+@RenderPage("~/Views/Evenements/ModalDetail.cshtml")
 
 <script type="text/javascript">
 
-    $(function () {
-        $.ajax({
-            url: '@Url.Action("AjaxListe", "Evenements")',
-            type: 'GET',
-            dataType: 'json',
-        }).done(function (response) {
-            $('#liste-evenements').html(response.Html);
-        }).fail(function (response) {
-            swal("Une erreur est survenue lors du rechargement de la page", {
-                icon: "error",
-            });
-            console.log(response);
-        });
-    });
+    @{
+        var isModeMyEvents = Request.Params.Get("mode") != null;
+        var routeListe = Url.Action("AjaxListe", "Evenements");
+        if (isModeMyEvents)
+        {
+            routeListe = Url.Action("ListInscrit", "Evenements");
+        }
+    }
 
-    function deleteEvent(self){
+    function loadListEvents() {
+        $(function () {
+            $.ajax({
+                url: '@routeListe',
+                type: 'GET',
+                dataType: 'json',
+            }).done(function (response) {
+                $('#liste-evenements').html(response.Html);
+            }).fail(function (response) {
+                swal("Une erreur est survenue lors du rechargement de la page", {
+                    icon: "error",
+                });
+                console.log(response);
+            });
+        });
+    }
+    loadListEvents();
+
+    function deleteEvent(self) {
         swal({
             title: "Confirmation",
             text: "Voulez-vous annuler l'événement \"" + $(self).data('name') + "\" ?",
@@ -67,8 +79,8 @@
                         console.log(response);
                     }
                 });
-               
-                
+
+
             } else {
                 //ne rien faire
             }
@@ -79,7 +91,7 @@
         var href = $(e).data('href');
         window.location.href = href;
     }
-    
+
 
 </script>
 

@@ -61,8 +61,10 @@
 
             if (response.Inscrit) {
                 $('#desinscription').removeClass('hidden');
+                $('#inscription').addClass('hidden');
             } else {
                 $('#inscription').removeClass('hidden');
+                $('#desinscription').addClass('hidden');
             }
             detailsEvent = response;
             leafleftMap(response.Adresse);
@@ -260,6 +262,9 @@
                     $(self).addClass('hidden');
                     $(self).removeClass('disabled');
                     $('#inscription').removeClass('hidden');
+                    if (typeof loadListEvents == 'function') {
+                        loadListEvents();
+                    }
                 } else {
                     $.notify('Une erreur s\'est produite lors de la désinscription', 'warn');
                     $(self).removeClass('disabled');

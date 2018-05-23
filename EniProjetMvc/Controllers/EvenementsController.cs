@@ -187,13 +187,22 @@ namespace EniProjetMvc.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         [Authorize]
         public ActionResult ListInscrit()
         {
             var user = db.GetFullUser(User.Identity.GetUserId());
             var repo = DAOFactory.GetRepository<Evenement>(db) as EvenementDAO;
             List<Evenement> list = repo.listAll(user.Utilisateur);
-            return View("Index", list);
+            var view = ViewRenderer.RenderPartialView("~/Views/Evenements/ListOrganizer.cshtml", list, ControllerContext);
+            view = Regex.Replace(view, @"[\r\n]+", "");
+            view = view.Replace("                        ", "");
+            if (list.Count == 0)
+            {
+                view = "<div class=\"alert alert-warning\">Aucun événement à afficher</div>";
+            }
+            var res = new { Html = view };
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -202,7 +211,11 @@ namespace EniProjetMvc.Controllers
             var list = DAOFactory.GetRepository<Evenement>(db).listAll();
             var view = ViewRenderer.RenderPartialView("~/Views/Evenements/ListOrganizer.cshtml", list, ControllerContext);
             view = Regex.Replace(view, @"[\r\n]+", "");
-            view = view.Replace("                        ", ""); // Fuck it.
+            view = view.Replace("                        ", "");
+            if (list.Count == 0)
+            {
+                view = "<div class=\"alert alert-warning\">Aucun événement à afficher</div>";
+            }
             var res = new { Html = view };
             return Json(res, JsonRequestBehavior.AllowGet);
         }
