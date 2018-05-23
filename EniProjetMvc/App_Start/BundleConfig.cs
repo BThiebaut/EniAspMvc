@@ -46,6 +46,7 @@ namespace EniProjetMvc
                       "~/Scripts/leaflet.js",
                       "~/Scripts/leaflet-geosearch-min.js",
                       "~/Scripts/leaflet-providers.js",
+                      "~/Scripts/leaflet-routing-machine.js",
                       "~/Scripts/leaflet-routeboxer.js",
                       "~/Scripts/custom.js"
                       ));

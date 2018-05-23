@@ -22,11 +22,12 @@
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByNxF6boskqziz8hWVjBuTJhXCPYlOsfE&sensor=false">
 </script>
-<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
 <script type="text/javascript">
 
     var mymap = null;
+
+    var DepartMarker = null;
 
     function leafleftMap(Adresse) {
         
@@ -89,8 +90,11 @@
                     latDepart = results[0].geometry.location.lat();
                     lngDepart = results[0].geometry.location.lng();
                     if (mymap != null) {
-                        var marker = L.marker([latDepart, lngDepart]).addTo(mymap);
-                        marker.bindPopup("<b>Depart</b>").openPopup();
+                        if (DepartMarker != null) {
+                            mymap.removeLayer(DepartMarker)
+                        }
+                        DepartMarker = L.marker([latDepart, lngDepart]).addTo(mymap);
+                        DepartMarker.bindPopup("<b>"+AdresseUtilisateur+"</b>").openPopup();
                     }
 
                     geocoder.geocode({ 'address': AdresseEvenement }, function (results, status) {
