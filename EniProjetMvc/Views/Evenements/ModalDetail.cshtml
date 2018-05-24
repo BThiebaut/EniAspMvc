@@ -224,7 +224,46 @@
         });
     }
 
-    function renderRegisterModal(HtmlLogin, HtmlRegister) {
+    function inscrireConvive(datas) {
+        var userId = '@User.Identity.GetUserId()';
+        $.ajax({
+            url: '@Url.Action("AjaxInscription", "Evenements")',
+            method: 'post',
+            data: datas
+        }).done(function (response) {
+            if (!response.Error) {
+                $.notify('Vous avez bien été inscrit à cet événement', 'success');
+                $(self).addClass('hidden');
+                $(self).removeClass('disabled');
+                $('#desinscription').removeClass('hidden');
+            } else {
+                $.notify('Une erreur s\'est produite lors de l\'inscription', 'warn');
+                $(this).removeClass('disabled');
+            }
+        }).fail(function (response) {
+            $.notify('Une erreur s\'est produite lors de l\'inscription', 'warn');
+            $(this).removeClass('disabled');
+            console.log(response);
+        });
+    }
+
+
+    function loginModal(datas) {
+        var dataForm = $('#tab1 form').serialize();
+        $.ajax({
+            url: '@Url.Action("AjaxLoginRender", "Account")',
+            method: 'post',
+            data:  dataForm ,
+        }).done(function (response) {
+            inscrireConvive(datas);
+            detailEvent(datas.idEvenement);
+        }).fail(function (result) {
+            console.log(result);
+            $.notify("La connexion a échoué", "error");
+        });
+    }
+
+    function renderRegisterModal(HtmlLogin, HtmlRegister, datas) {
         var content =
             '<div class="nav-tabs-custom">'
                 + '<ul class="nav nav-tabs">'
@@ -247,25 +286,9 @@
         $('#event-detail-modal .login-box-body form').off("submit");
         $('#event-detail-modal .login-box-body form').on("submit", function (e) {
             e.preventDefault();
-            console.log('coucou');
-            loginModal(e);
+            loginModal(datas);
         });
 
-    }
-
-    function loginModal(e) {
-        var dataForm = $('#tab1 form').serialize();
-        $.ajax({
-            url: '@Url.Action("AjaxLoginRender","Account")',
-            method: 'post',
-            data: {
-                'model' : dataForm
-            },
-        }).done(function (response) {
-            console.log(response);
-        }).fail(function (result) {
-            console.log(result);
-        });
     }
 
     $('#inscription').on('click', function () {
@@ -277,27 +300,9 @@
             var eventId = $('#eventId').val();
             var datas = { idEvenement: eventId };
             if (isAuth == 'true') { // Inscrit l'utilisateur courrant
-                var userId = '@User.Identity.GetUserId()';
-                $.ajax({
-                    url: '@Url.Action("AjaxInscription", "Evenements")',
-                    method: 'post',
-                    data: datas
-                }).done(function (response) {
-                    if (!response.Error) {
-                        $.notify('Vous avez bien été inscrit à cet événement', 'success');
-                        $(self).addClass('hidden');
-                        $(self).removeClass('disabled');
-                        $('#desinscription').removeClass('hidden');
-                    } else {
-                        $.notify('Une erreur s\'est produite lors de l\'inscription', 'warn');
-                        $(this).removeClass('disabled');
-                    }
-                }).fail(function (response) {
-                    $.notify('Une erreur s\'est produite lors de l\'inscription', 'warn');
-                    $(this).removeClass('disabled');
-                    console.log(response);
-                });
+                inscrireConvive(datas);
             } else { // demande connexion / inscription
+                $('#event-detail-modal').html('<i class="fa fa-cog fa-spin  fa-2x fa-fw"></i> chargement...');
                 $.ajax({
                     url: '@Url.Action("AjaxLoginRender", "Account")',
                     data: 'json',
@@ -306,7 +311,7 @@
                     $.ajax({
                         url: '@Url.Action("AjaxRegisterRender", "Account")',
                     }).done(function (response) {
-                        renderRegisterModal(login, response.Html);
+                        renderRegisterModal(login, response.Html, datas);
 
                     }).fail(function () {
                         $.notify("un problème est survenu lors de l'inscription", "error");
