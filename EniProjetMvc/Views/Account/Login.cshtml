@@ -42,8 +42,13 @@
                 <!-- /.col -->
             </div>
         </form>
-        <!-- /.social-auth-links -->
-        @Html.ActionLink("Créer un compte", "Register")
+        @if (ViewBag.hideLink == null)
+        {
+            <div>
+                <!-- /.social-auth-links -->
+                @Html.ActionLink("Créer un compte", "Register")
+            </div>
+        }
     </div>
     <!-- /.login-box-body -->
 </div>

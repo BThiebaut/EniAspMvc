@@ -103,6 +103,7 @@ namespace EniProjetMvc
         public JsonResult AjaxLoginRender()
         {
             ViewBag.ReturnUrl = "";
+            ViewBag.hideLink = true;
             var view = ViewRenderer.RenderPartialView("~/Views/Account/Login.cshtml", null, ControllerContext);
             var res = new { Html = view };
             return Json(res, JsonRequestBehavior.AllowGet);
@@ -152,6 +153,7 @@ namespace EniProjetMvc
         public JsonResult AjaxRegisterRender()
         {
             ViewBag.ReturnUrl = "";
+            ViewBag.hideLink = true;
             var view = ViewRenderer.RenderPartialView("~/Views/Account/Register.cshtml", null, ControllerContext);
             var res = new { Html = view };
             return Json(res, JsonRequestBehavior.AllowGet);
