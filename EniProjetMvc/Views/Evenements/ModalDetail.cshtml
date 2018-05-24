@@ -243,10 +243,17 @@
                 + '</div>'
             + '</div>'
         $('#event-detail-modal').html(content);
+
+        $('#event-detail-modal .login-box-body form').off("submit");
+        $('#event-detail-modal .login-box-body form').on("submit", function (e) {
+            e.preventDefault();
+            console.log('coucou');
+            loginModal(e);
+        });
+
     }
 
     function loginModal(e) {
-        e.preventDefault();
         var dataForm = $('#tab1 form').serialize();
         $.ajax({
             url: '@Url.Action("AjaxLoginRender","Account")',
@@ -300,11 +307,6 @@
                         url: '@Url.Action("AjaxRegisterRender", "Account")',
                     }).done(function (response) {
                         renderRegisterModal(login, response.Html);
-
-                        $("#tab_1 button").off("submit");
-                        $("#tab_1 button").on("submit", function (e) {
-                            loginModal(e);
-                        });
 
                     }).fail(function () {
                         $.notify("un problème est survenu lors de l'inscription", "error");
