@@ -271,22 +271,35 @@
     function registerModal(datas) {
         var eventId = detailsEvent.Id;
         var dataForm = $('#event-detail-modal #tab_2 .login-box-body form').serialize();
-        $.ajax({
-            url: '@Url.Action("AjaxRegisterRender", "Account")' + '?event=' + eventId,
-            method: 'post',
-            data: dataForm,
-        }).done(function (response) {
-            if (!response.Error) {
-                $.notify('Vous avez bien été inscrit à cet événement', 'success');
-                window.location.reload();
-            } else {
-                $.notify("Une erreur s'est produite : " + response.Message, "warn");
+        var fields = $('#event-detail-modal #tab_2 .login-box-body form').serializeArray();
+        var hasError = false;
+
+        $('#tab_2 .has-error').removeClass('has-error');
+
+        $.each(fields, function (index, field) {
+            if (field.value == '') {
+                hasError = true;
+                $('#tab_2 input[name="' + field.name + '"]').parent().addClass('has-error');
             }
-        }).fail(function (error) {
-            $.notify("une erreur c'est produite lors de l'inscription");
-            console.log(error);
         });
 
+        if (!hasError) {
+            $.ajax({
+                url: '@Url.Action("AjaxRegisterRender", "Account")' + '?event=' + eventId,
+                method: 'post',
+                data: dataForm,
+            }).done(function (response) {
+                if (!response.Error) {
+                    $.notify('Vous avez bien été inscrit à cet événement', 'success');
+                    window.location.reload();
+                } else {
+                    $.notify("Une erreur s'est produite : " + response.Message, "warn");
+                }
+            }).fail(function (error) {
+                $.notify("une erreur c'est produite lors de l'inscription");
+                console.log(error);
+            });
+        }
     }
 
     function renderRegisterModal(HtmlLogin, HtmlRegister, datas, adresse) {

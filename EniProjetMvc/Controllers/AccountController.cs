@@ -181,6 +181,7 @@ namespace EniProjetMvc
                     var evenement = DAOFactory.GetRepository<Evenement>(db).getById(id);
                     var fullUser = db.GetFullUser(userId);
                     fullUser.Utilisateur.Evenements.Add(evenement);
+                    DAOFactory.GetRepository<Utilisateur>(db).update(fullUser.Utilisateur);
 
                     // Pour plus d'informations sur l'activation de la confirmation du compte et la réinitialisation du mot de passe, consultez http://go.microsoft.com/fwlink/?LinkID=320771
                     // Envoyer un message électronique avec ce lien
