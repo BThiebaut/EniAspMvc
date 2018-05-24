@@ -133,7 +133,6 @@
 
     /**
     * Retourne la liste des 3 premiers parkings éligible
-    * TODO : réparer l'algo à la fin, ça me donne le tournis.
     */
     this.getParkingList = function () {
         var parkEvent = {};
