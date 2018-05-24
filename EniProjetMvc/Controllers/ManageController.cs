@@ -7,12 +7,15 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EniProjetMvc.Models;
+using DAL;
+using BO;
 
 namespace EniProjetMvc.Controllers
 {
     [Authorize]
     public class ManageController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -64,13 +67,15 @@ namespace EniProjetMvc.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            var fullUser = db.GetFullUser(userId);
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                Adresse = fullUser.Utilisateur.Adresse
             };
             return View(model);
         }
@@ -318,6 +323,20 @@ namespace EniProjetMvc.Controllers
             }
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public JsonResult UpdateAdresse(string adresse)
+        {
+            var ok = false;
+            if (adresse != null && adresse != "")
+            {
+                var user = db.GetFullUser(User.Identity.GetUserId());
+                user.Utilisateur.Adresse = adresse;
+                ok = DAOFactory.GetRepository<Utilisateur>(db).update(user.Utilisateur);
+            }
+            return Json(new { Error = !ok });
         }
 
         protected override void Dispose(bool disposing)

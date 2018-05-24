@@ -319,3 +319,8 @@ a.show-all {
     background-color: #3276b1;
     color: #fff;
 }
+
+/* Fix rapide */
+.input-adr {
+    display: flex;
+}

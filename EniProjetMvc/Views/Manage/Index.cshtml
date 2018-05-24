@@ -3,8 +3,6 @@
     ViewBag.Title = "Gérer";
 }
 
-<h2>@ViewBag.Title.</h2>
-
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
     <h4>Changer les paramètres de votre compte</h4>
@@ -23,62 +21,41 @@
             }
             ]
         </dd>
-        <dt>Connexions externes :</dt>
+        <dt>Adresse :</dt>
+        <dd>@Model.Adresse <small><a href="" id="editAdresse">[Modifier]</a></small></dd>
         <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Gérer", "ManageLogins") ]
-        </dd>
-        @*
-            Les numéros de téléphone peuvent servir de second facteur de vérification dans un système d'authentification à 2 facteurs.
-             
-             Consultez <a href="http://go.microsoft.com/fwlink/?LinkId=403804">cet article</a>
-                pour des détails sur la configuration de cette application ASP.NET en vue de la prise en charge de l'authentification à 2 facteurs via des SMS.
-             
-             Décommentez le bloc suivant après avoir configuré l'authentification à 2 facteurs
-        *@
-        @*  
-            <dt>Numéro de téléphone :</dt>
-            <dd>
-                @(Model.PhoneNumber ?? "Aucun") [
-                @if (Model.PhoneNumber != null)
-                {
-                    @Html.ActionLink("Changer", "AddPhoneNumber")
-                    @: &nbsp;|&nbsp;
-                    @Html.ActionLink("Supprimer", "RemovePhoneNumber")
-                }
-                else
-                {
-                    @Html.ActionLink("Ajouter", "AddPhoneNumber")
-                }
-                ]
-            </dd>
-        *@
-        <dt>Authentification à 2 facteurs :</dt>
-        <dd>
-            <p>
-                Il n'existe aucun fournisseur d'authentification à 2 facteurs configuré. Consultez <a href="http://go.microsoft.com/fwlink/?LinkId=403804">cet article</a>
-                pour des détails sur la configuration de cette application ASP.NET en vue de la prise en charge de l'authentification à 2 facteurs.
-            </p>
-            @*@if (Model.TwoFactor)
-                {
-                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Activé
-                        <input type="submit" value="Désactiver" class="btn btn-link" />
-                        </text>
-                    }
-                }
-                else
-                {
-                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Désactivé
-                        <input type="submit" value="Activer" class="btn btn-link" />
-                        </text>
-                    }
-                }*@
+            <div class="input-group input-group-sm input-adr hidden">
+                <input type="text" name="adresse" value="@Model.Adresse" class="form-control" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default btn-flat"><i class="fa fa-check"></i></button>
+                </span>
+            </div>
         </dd>
     </dl>
 </div>
+<script type="text/javascript">
+    $(function () {
+        $('#editAdresse').on('click', function (e) {
+            e.preventDefault();
+            $('.input-adr').removeClass('hidden');
+        });
+        $('.input-adr button[type="button"]').on('click', function () {
+            var adr = $('.input-adr input[name="adresse"]').val();
+            if (adr != "") {
+                $.ajax({
+                    url: '@Url.Action("UpdateAdresse", "Manage")',
+                    method: 'post',
+                    data: { adresse :  adr }
+                }).done(function (response) {
+                    if (response.Error) {
+                        $.notify("Une erreur s'est produite lors de la mise à jour de l'adresse", "warn");
+                    } else {
+                        window.location.reload();
+                    }
+                });
+            } else {
+                $('.input-adr input[name="adresse"]').parent().addClass('has-error');
+            }
+        });
+    });
+</script>
