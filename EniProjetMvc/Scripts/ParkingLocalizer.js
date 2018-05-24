@@ -140,12 +140,12 @@
         var depEvent = {};
         $.each(_self._oDataApi, function (index, data) {
             // Parking les plus proche de l'événement
-            var distParkArrive = _self.distance(data.features.geometry.coordinates[0], data.features.geometry.coordinates[1], _self._latArrive, _self._longArrive, 'K');
-            var distParkDepart = _self.distance(data.features.geometry.coordinates[0], data.features.geometry.coordinates[1], _self._latDepart, _self._longDepart, 'K');
+            var distParkArrive = _self.distance(data.features.geometry.coordinates[1], data.features.geometry.coordinates[0], _self._latArrive, _self._longArrive, 'K');
+            var distParkDepart = _self.distance(data.features.geometry.coordinates[1], data.features.geometry.coordinates[0], _self._latDepart, _self._longDepart, 'K');
             parkEvent[distParkArrive] = data;
             depEvent[distParkDepart] = data;
         });
-
+        
         var k = Object.keys(parkEvent);
         var sortedk = k.sort();
         var sortedPark = {};
@@ -167,29 +167,10 @@
         });
 
         var result = [];
-        // Récupère les 3 plus proche 
+        // Récupère les 3 plus proche de l'événement
         $.each(sortedPark, function (dist1, data) {
             if (result.length < 3) {
                 result.push(data);
-                /* TODO : make it work !
-                var res = null;
-                var dist = null;
-                var lastdist = null;
-                var idOk = [];
-
-                
-                $.each(sortedDep, function (dist2, data2) {
-                    dist = dist1 - dist2;
-                    
-                    if (lastdist != null && lastdist < dist && result.map(function(a){ return a !== null ? a.id : "null"; }).indexOf(data2.id) < 0) {
-                        res = data2;
-                        idOk.push(data2.id);
-                    }
-                    lastdist = dist;
-                    
-                });
-                result.push(res);
-                */
             }
         });
         _self._parkingList = result;
