@@ -124,9 +124,12 @@
 
 
     function deleteEvent(self) {
+        var text = "Voulez-vous annuler l'événement \"" + $(self).data('name') + "\" ?";
+        text += "\nLes utilisateurs inscrits seront alerté par e-mail.";
+
         swal({
             title: "Confirmation",
-            text: "Voulez-vous annuler l'événement \"" + $(self).data('name') + "\" ?",
+            text: text,
             icon: "warning",
             buttons: true,
             dangerMode: true,

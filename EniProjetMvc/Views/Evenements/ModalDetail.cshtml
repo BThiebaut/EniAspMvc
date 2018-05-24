@@ -59,13 +59,27 @@
         }).done(function (response) {
             $('#event-detail-modal').html(response.Html);
 
-            if (response.Inscrit) {
-                $('#desinscription').removeClass('hidden');
-                $('#inscription').addClass('hidden');
+            if (response.InscriptionOuverte) {
+                if (response.Inscrit) {
+                    $('#desinscription').removeClass('hidden');
+                    $('#inscription').addClass('hidden');
+                } else {
+                    $('#inscription').removeClass('hidden');
+                    $('#desinscription').addClass('hidden');
+                }
+
+                $('#inscription').removeClass('disabled');
+                $('#desinscription').removeClass('disabled');
+                $('#adresse-utilisateur').removeAttr('disabled');
+                $('#bouton-parking').removeAttr('disabled');
+                
             } else {
-                $('#inscription').removeClass('hidden');
+                $('#inscription').addClass('hidden');
                 $('#desinscription').addClass('hidden');
+                $('#adresse-utilisateur').attr('disabled', 'disabled');
+                $('#bouton-parking').attr('disabled', 'disabled');
             }
+
             detailsEvent = response;
             leafleftMap(response.Adresse);
             // Pré-remplis les champs avec l'utilisateur connecté

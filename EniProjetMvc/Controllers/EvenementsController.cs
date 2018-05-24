@@ -254,7 +254,8 @@ namespace EniProjetMvc.Controllers
                 Duree = evenement.Duree,
                 HeureOuverture = evenement.HeureOuverture,
                 HeureFermeture = evenement.HeureFermeture,
-                UserAdresse = user != null ? user.Utilisateur.Adresse : ""
+                UserAdresse = user != null ? user.Utilisateur.Adresse : "",
+                InscriptionOuverte = evenement.Statut == StatutEvenement.A_VENIR || evenement.Statut == StatutEvenement.EN_COURS
             };
             return Json(res, JsonRequestBehavior.AllowGet);
         }
