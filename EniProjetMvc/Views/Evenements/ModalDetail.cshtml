@@ -210,6 +210,43 @@
         });
     }
 
+    function renderRegisterModal(HtmlLogin, HtmlRegister) {
+        var content =
+            '<div class="nav-tabs-custom">'
+                + '<ul class="nav nav-tabs">'
+                    + '<li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Connexion</a></li>'
+                    + '<li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Inscription</a></li>'
+                + '</ul>'
+                + '<div class="tab-content">'
+                    + '<div class="tab-pane active" id="tab_1">'
+                        + '<h3>connexion</h3>'
+                        + HtmlLogin
+                    + '</div>'
+                    + '<div class="tab-pane" id="tab_2">'
+                        + '<h3>Inscription</h3>'
+                        + HtmlRegister
+                    + '</div>'
+                + '</div>'
+            + '</div>'
+        $('#event-detail-modal').html(content);
+    }
+
+    function loginModal(e) {
+        e.preventDefault();
+        var dataForm = $('#tab1 form').serialize();
+        $.ajax({
+            url: '@Url.Action("AjaxLoginRender","Account")',
+            method: 'post',
+            data: {
+                'model' : dataForm
+            },
+        }).done(function (response) {
+            console.log(response);
+        }).fail(function (result) {
+            console.log(result);
+        });
+    }
+
     $('#inscription').on('click', function () {
         if (!$(this).hasClass('disabled')) {
             $(this).addClass('disabled');
@@ -218,7 +255,7 @@
             console.log(isAuth);
             var eventId = $('#eventId').val();
             var datas = { idEvenement: eventId };
-            if (isAuth) { // Inscrit l'utilisateur courrant
+            if (isAuth == 'true') { // Inscrit l'utilisateur courrant
                 var userId = '@User.Identity.GetUserId()';
                 $.ajax({
                     url: '@Url.Action("AjaxInscription", "Evenements")',
@@ -240,7 +277,30 @@
                     console.log(response);
                 });
             } else { // demande connexion / inscription
+                $.ajax({
+                    url: '@Url.Action("AjaxLoginRender", "Account")',
+                    data: 'json',
+                }).done(function (response) {
+                    var login = response.Html
+                    $.ajax({
+                        url: '@Url.Action("AjaxRegisterRender", "Account")',
+                    }).done(function (response) {
+                        renderRegisterModal(login, response.Html);
 
+                        $("#tab_1 button").off("submit");
+                        $("#tab_1 button").on("submit", function (e) {
+                            loginModal(e);
+                        });
+
+                    }).fail(function () {
+                        $.notify("un problème est survenu lors de l'inscription", "error");
+                        console.log(response);
+                    });
+                    $("#event-detail-modal").html();
+                }).fail(function (response) {
+                    $.notify("un problème est survenu lors de l'inscription", "error");
+                    console.log(response);
+                });
             }
         }
     });
