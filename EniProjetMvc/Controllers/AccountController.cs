@@ -174,6 +174,14 @@ namespace EniProjetMvc
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
+                    var eventId = Request.Params.Get("event");
+                    String userId = user.Id;
+
+                    var id = int.Parse(eventId);
+                    var evenement = DAOFactory.GetRepository<Evenement>(db).getById(id);
+                    var fullUser = db.GetFullUser(userId);
+                    fullUser.Utilisateur.Evenements.Add(evenement);
+
                     // Pour plus d'informations sur l'activation de la confirmation du compte et la réinitialisation du mot de passe, consultez http://go.microsoft.com/fwlink/?LinkID=320771
                     // Envoyer un message électronique avec ce lien
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
