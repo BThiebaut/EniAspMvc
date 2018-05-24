@@ -198,6 +198,10 @@ table.table td {
     z-index: 850;
 }
 
+.uppercase {
+    text-transform: uppercase;
+}
+
 /* Index */
 .seperation-title {
     height: 60px;

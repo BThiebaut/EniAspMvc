@@ -91,6 +91,6 @@ namespace EniProjetMvc.Extensions
             var strLabel = mode ? "Ajouter" : "Modifier";
             return MvcHtmlString.Create(strLabel);
         }
-
+        
     }
 }

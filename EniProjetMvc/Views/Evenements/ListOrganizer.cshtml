@@ -1,5 +1,4 @@
 ﻿@using BO
-@using EniProjetMvc.Utils
 @using EniProjetMvc.Extensions
 @model IEnumerable<BO.Evenement>
 @{
@@ -12,11 +11,11 @@
     <form id="filter-form">
         <div class="row">
             <div class="col-md-3">
-                <label for="search">Rechercher un événement</label>
+                <label for="search" class="label label-default">Rechercher un événement</label>
                 <input name="search" id="search" class="form-control" placeholder="Rechercher..." type="text">
             </div>
             <div class="col-md-3">
-                <label for="theme">Thème</label>
+                <label for="theme" class="label label-default bg-purple uppercase" >Thème</label>
                 <select name="theme" id="theme" class="form-control">
                     <option value="" selected></option>
                     @foreach(var item in ViewBag.listTheme)
@@ -26,12 +25,12 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <label for="statut">Statut</label>
+                <label for="statut" class="label label-success">Statut</label>
                 <select name="statut" id="statut" class="form-control">
                     <option value="" selected></option>
                     @foreach (StatutEvenement item in Enum.GetValues(typeof(StatutEvenement)))
                     {
-                        <option value="@item">@EnumerationUtil.Instance.getLabelStatut(item)</option>
+                        <option value="@item" class="label label-@StatutEvenementUtil.GetStatutEvenementColor(item)">@StatutEvenementUtil.Instance.getLabelStatut(item)</option>
                     }
                 </select>
             </div>
@@ -56,31 +55,12 @@
                 @{ firstImageLink = item.Images != null && item.Images.Count() > 0 ? item.Images.First().Url : "/Content/images/default.png"; }
                 <div class="small-box event-item" style="background-image:url(@(firstImageLink));">
                     <p>
-
-                        @if (item.Statut == StatutEvenement.EN_COURS)
-                        {
-                            <span class="label label-success">
-                                @EnumerationUtil.Instance.getLabelStatut(item.Statut)
-                            </span>
-                        }
-                        else if (item.Statut == StatutEvenement.ANNULE)
-                        {
-                            <span class="label label-warning">
-                                @EnumerationUtil.Instance.getLabelStatut(item.Statut)
-                            </span>
-                        }
-                        else if (item.Statut == StatutEvenement.ARCHIVE)
-                        {
-                            <span class="label label-default">
-                                @EnumerationUtil.Instance.getLabelStatut(item.Statut)
-                            </span>
-                        }
-                        else {
-                            <span class="label label-info">
-                                @EnumerationUtil.Instance.getLabelStatut(item.Statut)
-                            </span>
-                        }
-
+                        <span class="label label-@StatutEvenementUtil.GetStatutEvenementColor(item.Statut)">
+                            @StatutEvenementUtil.Instance.getLabelStatut(item.Statut)
+                        </span>
+                        <span class="label label-default bg-purple pull-right uppercase">
+                            @item.Theme.Libelle
+                        </span>
                     </p>
                     <p onclick="detailEvent(@item.Id)" data-toggle="modal" data-target="#detailModal"></p>
                 </div>

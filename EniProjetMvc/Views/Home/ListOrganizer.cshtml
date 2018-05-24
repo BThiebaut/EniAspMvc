@@ -1,5 +1,4 @@
 ﻿@using BO
-@using EniProjetMvc.Utils
 @model IEnumerable<BO.Evenement>
 @{
     string firstImageLink = "";
@@ -13,6 +12,9 @@
             <div class="col-lg-3 evenement">
                 @{ firstImageLink = item.Images != null && item.Images.Count() > 0 ? item.Images.First().Url : "/Content/images/default.png"; }
                 <div class="small-box event-item" style="background-image:url(@(firstImageLink));">
+                    <span class="label label-default bg-purple pull-right uppercase">
+                        @item.Theme.Libelle
+                    </span>
                     <p onclick="detailEvent(@item.Id)" data-toggle="modal" data-target="#detailModal"></p>
                 </div>
                 <h4 class="bg-white">@item.Intitule</h4>
@@ -25,7 +27,7 @@
         @if (isEmpty)
         {
             <div class="col-md-12 text-center no-event">
-                Aucun événement <span class="lowercase">@EnumerationUtil.Instance.getLabelStatut(ViewBag.statut)</span> actuellement.
+                Aucun événement <span class="lowercase">@StatutEvenementUtil.Instance.getLabelStatut(ViewBag.statut)</span> actuellement.
             </div>
         }
     </div>

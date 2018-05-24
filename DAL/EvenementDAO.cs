@@ -49,12 +49,22 @@ namespace DAL
 
         public override Evenement getById(int id)
         {
-            return dbContext.Evenements.Include(e => e.Images).SingleOrDefault(e => e.Id == id);
+            return dbContext.Evenements
+                            .Include(e => e.Images)
+                            .Include(e => e.Theme)
+                            .Include(e => e.Convives)
+                            .SingleOrDefault(e => e.Id == id);
         }
 
         public List<Evenement> getByStatut(StatutEvenement statut, int limit)
         {
-            return dbContext.Evenements.Where(e => e.Statut == statut).Take(limit).Include(e => e.Images).ToList();
+            return dbContext.Evenements
+                            .Where(e => e.Statut == statut)
+                            .Take(limit)
+                            .Include(e => e.Images)
+                            .Include(e => e.Theme)
+                            .Include(e => e.Convives)
+                            .ToList();
         }
 
         public override Evenement insert(Evenement obj)
