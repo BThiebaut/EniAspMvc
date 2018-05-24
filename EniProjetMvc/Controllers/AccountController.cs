@@ -109,7 +109,6 @@ namespace EniProjetMvc
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<JsonResult> AjaxLoginRender(LoginViewModel model, string returnUrl)
         {
 
