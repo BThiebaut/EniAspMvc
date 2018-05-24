@@ -249,14 +249,19 @@
 
 
     function loginModal(datas) {
-        var dataForm = $('#tab1 form').serialize();
+        var eventId = detailsEvent.Id;
+        var dataForm = $('#event-detail-modal .login-box-body form').serialize();
         $.ajax({
-            url: '@Url.Action("AjaxLoginRender", "Account")',
+            url: '@Url.Action("AjaxLoginRender", "Account")' + '?event=' + eventId,
             method: 'post',
             data:  dataForm ,
         }).done(function (response) {
-            inscrireConvive(datas);
-            detailEvent(datas.idEvenement);
+            if (!response.Error) {
+                $.notify('Vous avez bien été inscrit à cet événement', 'success');
+                window.location.reload();
+            } else {
+                $.notify("Une erreur s'est produite : " + response.Message, "warn");
+            }
         }).fail(function (result) {
             console.log(result);
             $.notify("La connexion a échoué", "error");

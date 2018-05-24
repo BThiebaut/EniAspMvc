@@ -19,6 +19,7 @@ namespace EniProjetMvc
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -123,7 +124,19 @@ namespace EniProjetMvc
             switch (result)
             {
                 case SignInStatus.Success:
-                    return Json(new { Erreur = false }, JsonRequestBehavior.AllowGet);
+                    var eventId = Request.Params.Get("event");
+                    var isOk = true;
+                    if (eventId != null && eventId != "")
+                    {
+                        string userId = SignInManager.AuthenticationManager.AuthenticationResponseGrant.Identity.GetUserId();
+                        var id = int.Parse(eventId);
+                        var evenement = DAOFactory.GetRepository<Evenement>(db).getById(id);
+                        var fullUser = db.GetFullUser(userId);
+                        fullUser.Utilisateur.Evenements.Add(evenement);
+                        isOk = DAOFactory.GetRepository<Utilisateur>(db).update(fullUser.Utilisateur);
+                    }
+
+                    return Json(new { Erreur = !isOk }, JsonRequestBehavior.AllowGet);
                 case SignInStatus.LockedOut:
                     return Json(new { Erreur = true }, JsonRequestBehavior.AllowGet);
                 case SignInStatus.RequiresVerification:
