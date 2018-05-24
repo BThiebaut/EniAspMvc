@@ -5,7 +5,7 @@
     ViewBag.Title = "Liste des événements";
     ViewBag.btnNav = new List<BtnNav>();
     var btnNav = new BtnNav { Url = @Url.Action("Create", "Evenements"), Text = "Nouvel événement", Icone = "fa fa-plus-circle", Color = "success", AdminOnly = true };
-    var btnNavArchive = new BtnNav { Url = @Url.Action("AjaxArchiveAuto", "Evenements"), Text = "Archivage semi-auto", Icone = "fa fa-folder", Color = "warning", Id = "archive-events", AdminOnly = true };
+    var btnNavArchive = new BtnNav { Url = @Url.Action("AjaxArchiveAuto", "Evenements"), Text = "Mettre à jour les statuts", Icone = "fa fa-refresh", Color = "warning", Id = "archive-events", AdminOnly = true };
     ViewBag.btnNav.Add(btnNav);
     ViewBag.btnNav.Add(btnNavArchive);
 }
@@ -102,7 +102,7 @@
                             type: 'GET',
                         }).done(function (response) {
                             if (!response.Error) {
-                                $.notify("L'archivage semi-automatique s'est bien déroulé", "success");
+                                $.notify("Les statuts ont bien été mis à jour", "success");
                                 loadListEvents();
                             }
                             else {

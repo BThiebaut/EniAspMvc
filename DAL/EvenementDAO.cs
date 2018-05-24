@@ -66,7 +66,12 @@ namespace DAL
 
         public override List<Evenement> listAll()
         {
-            return dbContext.Evenements.Include(e => e.Images).OrderBy(e => e.Statut).ToList();
+            return dbContext.Evenements
+                            .Include(e => e.Images)
+                            .Include(e => e.Theme)
+                            .Include(e => e.Convives)
+                            .OrderBy(e => e.Statut)
+                            .ToList();
         }
 
         public List<Evenement> listAll(Utilisateur utilisateur)
@@ -77,7 +82,11 @@ namespace DAL
 
         public List<Evenement> listAll(Utilisateur utilisateur = null, string search = null, Theme theme = null, StatutEvenement? statut = null)
         {
-            var query = dbContext.Evenements.Include(e => e.Images);
+            var query = dbContext.Evenements
+                                 .Include(e => e.Images)
+                                 .Include(e => e.Theme)
+                                 .Include(e => e.Convives);
+
             if (utilisateur != null)
             {
                 var events = utilisateur.Evenements.Select(o => o.Id).ToList();
@@ -93,7 +102,7 @@ namespace DAL
             {
                 query = query.Where(e => e.Theme.Id == theme.Id);
             }
-            if(statut != null && statut.HasValue)
+            if (statut != null && statut.HasValue)
             {
                 query = query.Where(e => e.Statut == statut.Value);
             }
@@ -135,12 +144,13 @@ namespace DAL
                 if (item.DateFin < today && item.Statut != StatutEvenement.ANNULE)
                 {
                     item.Statut = StatutEvenement.ARCHIVE;
-                    this.update(item);
-                }else if (item.DateDebut < today && item.DateFin > today && item.Statut != StatutEvenement.ANNULE)
+                }
+                else if (item.DateDebut < today && item.DateFin > today && item.Statut != StatutEvenement.ANNULE)
                 {
                     item.Statut = StatutEvenement.EN_COURS;
                 }
             }
+            dbContext.SaveChanges();
         }
 
     }
