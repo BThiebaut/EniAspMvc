@@ -134,7 +134,7 @@ namespace EniProjetMvc.Controllers
         {
             var repo = DAOFactory.GetRepository<Theme>(db) as ThemeDAO;
             var list = repo.listFull();
-            var view = ViewRenderer.RenderPartialView("~/Views/Theme/ListThemes.cshtml", list, ControllerContext);
+            var view = ViewRenderer.RenderPartialView("~/Views/Themes/ListThemes.cshtml", list, ControllerContext);
             var res = new { Html = view };
             return Json(res, JsonRequestBehavior.AllowGet);
         }

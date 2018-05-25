@@ -43,7 +43,12 @@
 
         @{ 
             var hasHeader = ViewBag.Title != null && ViewBag.Title != "" ? "" : "hidden-header";
-
+            if (ViewBag.btnNav == null)
+            {
+                ViewBag.btnNav = new List<BtnNav>();
+            }
+            var btnNavTheme = new BtnNav { Url = @Url.Action("Index", "Themes"), Text = "Gérer les thèmes", Icone = "fa fa-dashboard", Color = "default", AdminOnly = true, Classes = new List<string> { "pull-right" } };
+            ViewBag.btnNav.Add(btnNavTheme);
         }
 
         <section class="content-header @hasHeader">
