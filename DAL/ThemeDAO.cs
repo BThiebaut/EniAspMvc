@@ -76,5 +76,13 @@ namespace DAL
             }
             return isOk;
         }
+
+        public bool ToogleActive(int id)
+        {
+            
+            var dbo = this.getById(id);
+            dbo.Desactive = !dbo.Desactive;
+            return this.update(dbo);
+        }
     }
 }

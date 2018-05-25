@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using BO;
 using EniProjetMvc.Models;
 using DAL;
+using EniProjetMvc.Extensions;
 
 namespace EniProjetMvc.Controllers
 {
@@ -19,7 +20,7 @@ namespace EniProjetMvc.Controllers
         // GET: Themes
         public ActionResult Index()
         {
-            return View(db.Themes.ToList());
+            return View(DAOFactory.GetRepository<Theme>(db).listAll());
         }
 
         // GET: Themes/Details/5
@@ -118,12 +119,33 @@ namespace EniProjetMvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public JsonResult AjaxQuickCreate(string libelle)
         {
             var theme = new Theme { Libelle = libelle };
             theme = DAOFactory.GetRepository<Theme>(db).insert(theme);
             var res = new { list = DAOFactory.GetRepository<Theme>(db).listAll() };
             return Json(res);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public JsonResult AjaxListe()
+        {
+            var repo = DAOFactory.GetRepository<Theme>(db) as ThemeDAO;
+            var list = repo.listAll();
+            var view = ViewRenderer.RenderPartialView("~/Views/Theme/ListThemes.cshtml", list, ControllerContext);
+            var res = new { Html = view };
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public JsonResult AjaxToogleActive(int id)
+        {
+            var repo = DAOFactory.GetRepository<Theme>(db) as ThemeDAO;
+            var isOk = repo.ToogleActive(id);
+            return Json(new { Error = !isOk });
         }
 
         protected override void Dispose(bool disposing)
