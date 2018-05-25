@@ -33,9 +33,15 @@
             </div>
             <div class="col-md-8">
                 <div id="quickTheme" class="hidden">
-                    <label>Libellé</label>
-                    <input class="form-control input-sm" type="text" />
-                    <button id="addTheme" class="btn btn-default" type="button">Ajouter</button>
+                    <div class="form-group">
+                        <label>Libellé</label>
+                        <input class="form-control input-sm" id="theme-libelle" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea cols="3" rows="3" id="theme-description" class="form-control input-sm"></textarea>
+                    </div>
+                    <button id="addTheme" class="btn btn-default" type="button"><i class="fa fa-plus"></i> Ajouter</button>
                 </div>
             </div>
         </div>
@@ -73,26 +79,33 @@
             $('#quickTheme').removeClass('hidden');
         });
         $('#addTheme').on('click', function () {
-            var lib = $('#quickTheme input[type="text"]').val();
-            var datas = { libelle: lib };
-            $.ajax({
-                url: '@Url.Action("AjaxQuickCreate", "Themes")',
-                method: 'post',
-                data: datas
-            }).done(function (response) {
-                console.log(response);
-                if (response.list) {
-                    var html = '';
-                    $.each(response.list, function (index, data) {
-                        html += '<option value="' + data.Id + '">' + data.Libelle + '</option>';
-                    });
-                    $('#selectedTheme').html(html);
-                    $('#quickTheme input[type="text"]').val('');
-                    $('#quickTheme').addClass('hidden');
-                }
-            }).fail(function (response) {
-                $.notify('Une erreur s\'est produite lors de la création du thème', 'danger');
-            })
+            var lib = $('#quickTheme #theme-libelle').val();
+            var desc = $('#quickTheme #theme-description').val();
+            $('#theme-libelle').parent().removeClass('has-error');
+            var datas = { libelle: lib, description: desc };
+            if (lib != "" && lib !== null) {
+                $.ajax({
+                    url: '@Url.Action("AjaxQuickCreate", "Themes")',
+                    method: 'post',
+                    data: datas
+                }).done(function (response) {
+                    console.log(response);
+                    if (response.list) {
+                        var html = '';
+                        $.each(response.list, function (index, data) {
+                            html += '<option value="' + data.Id + '">' + data.Libelle + '</option>';
+                        });
+                        $('#selectedTheme').html(html);
+                        $('#quickTheme #theme-libelle').val('');
+                        $('#quickTheme #theme-description').val('');
+                        $('#quickTheme').addClass('hidden');
+                    }
+                }).fail(function (response) {
+                    $.notify('Une erreur s\'est produite lors de la création du thème', 'danger');
+                })
+            } else {
+                $('#theme-libelle').parent().addClass('has-error');
+            }
         });
 
         function renderAddedFiles() {

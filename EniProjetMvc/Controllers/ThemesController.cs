@@ -120,9 +120,9 @@ namespace EniProjetMvc.Controllers
 
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public JsonResult AjaxQuickCreate(string libelle)
+        public JsonResult AjaxQuickCreate(string libelle, string description)
         {
-            var theme = new Theme { Libelle = libelle };
+            var theme = new Theme { Libelle = libelle, Description = description };
             theme = DAOFactory.GetRepository<Theme>(db).insert(theme);
             var res = new { list = DAOFactory.GetRepository<Theme>(db).listAll() };
             return Json(res);
