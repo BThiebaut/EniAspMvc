@@ -58,7 +58,7 @@ namespace DAL
 
         public override List<Theme> listAll()
         {
-            return dbContext.Themes.ToList();
+            return dbContext.Themes.Where(t => !t.Desactive).ToList();
         }
 
         public override bool update(Theme obj)
