@@ -133,7 +133,7 @@ namespace EniProjetMvc.Controllers
         public JsonResult AjaxListe()
         {
             var repo = DAOFactory.GetRepository<Theme>(db) as ThemeDAO;
-            var list = repo.listAll();
+            var list = repo.listFull();
             var view = ViewRenderer.RenderPartialView("~/Views/Theme/ListThemes.cshtml", list, ControllerContext);
             var res = new { Html = view };
             return Json(res, JsonRequestBehavior.AllowGet);

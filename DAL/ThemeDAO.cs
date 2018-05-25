@@ -61,6 +61,11 @@ namespace DAL
             return dbContext.Themes.Where(t => !t.Desactive).ToList();
         }
 
+        public List<Theme> listFull()
+        {
+            return dbContext.Themes.OrderBy(t => !t.Desactive).ToList();
+        }
+
         public override bool update(Theme obj)
         {
             var isOk = true;
