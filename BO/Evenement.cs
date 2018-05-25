@@ -29,7 +29,7 @@ namespace BO
         [Required]
         public DateTime DateFin { get; set; }
 
-        [DisplayName("Durée")]
+        [DisplayName("Durée (en jours)")]
         [Required]
         public int Duree { get; set; }
 

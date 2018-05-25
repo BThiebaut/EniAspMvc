@@ -31,7 +31,7 @@
                     <li>@Html.ActionLink("Evenements", "Index", "Evenements")</li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Evenements inscrits", "Index", new { controller = "Evenements", mode="myevents" })</li>
+                        <li>@Html.ActionLink("Evenements inscrits", "Index", new { controller = "Evenements", mode = "myevents" })</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -41,13 +41,13 @@
         <!-- Content Wrapper. Contains page content -->
         <!-- Content Header (Page header) -->
 
-        @{ 
+        @{
             var hasHeader = ViewBag.Title != null && ViewBag.Title != "" ? "" : "hidden-header";
             if (ViewBag.btnNav == null)
             {
                 ViewBag.btnNav = new List<BtnNav>();
             }
-            var btnNavTheme = new BtnNav { Url = @Url.Action("Index", "Themes"), Text = "Gérer les thèmes", Icone = "fa fa-dashboard", Color = "default", AdminOnly = true, Classes = new List<string> { "pull-right" } };
+            var btnNavTheme = new BtnNav { Url = @Url.Action("Index", "Themes"), Text = "Gérer les thèmes", Icone = "fa fa-dashboard", Color = "default", AdminOnly = true };
             ViewBag.btnNav.Add(btnNavTheme);
         }
 

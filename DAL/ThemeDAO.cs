@@ -63,7 +63,7 @@ namespace DAL
 
         public List<Theme> listFull()
         {
-            return dbContext.Themes.OrderBy(t => !t.Desactive).ToList();
+            return dbContext.Themes.OrderBy(t => t.Desactive).ToList();
         }
 
         public override bool update(Theme obj)
