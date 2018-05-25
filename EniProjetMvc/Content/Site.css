@@ -324,3 +324,9 @@ a.show-all {
 .input-adr {
     display: flex;
 }
+
+.btn-theme{
+    position: absolute;
+    bottom: 17px;
+    right: 17px;
+}

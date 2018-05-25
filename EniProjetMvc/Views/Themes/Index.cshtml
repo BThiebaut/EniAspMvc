@@ -1,39 +1,97 @@
 ﻿@model IEnumerable<BO.Theme>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Liste des thèmes";
 }
 
-<h2>Index</h2>
+<div class="row">
+     <div class="form-group">
+        <div class="col-md-3">
+            <button type="button" class="btn btn-default btn-sm btn-quickTheme"><i class="fa fa-plus"></i> Ajouter un thème</button>
+        </div>
+        <div class="col-md-9">
+            <div id="quickTheme" class="hidden">
+                <label>Libellé</label>
+                <input class="form-control input-sm" type="text" />
+                <button id="addTheme" class="btn btn-default" type="button">Ajouter</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Libelle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th></th>
-    </tr>
+<div id="list-theme">
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Libelle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+</div>
 
-</table>
+<script type="text/javascript">
+    function loadTheme(){
+        $.ajax({
+                url: '@Url.Action("AjaxListe", "Themes")',
+                type: 'GET',
+                dataType: 'json',
+            }).done(function (response) {
+                $('#list-theme').html(response.Html);
+
+                $(".btn-theme").off("click");
+                $(".btn-theme").on("click", function () {
+                    var id = $(this).data("id");
+
+                    $.ajax({
+                        url: '@Url.Action("AjaxToogleActive", "Themes")',
+                        type: 'post',
+                        data: {
+                            id: id
+                        },
+                        dataType: 'json',
+                    }).done(function (response) {
+
+                        if (!response.Error) {
+                            loadTheme();
+                            $.notify('opération terminé avec succés', 'success');
+                        }
+                        else {
+                            $.notify("Impossible d'activer / désactiver", "error");
+                            console.log(response);
+                        }
+                    }).fail(function (response) {
+                        $.notify("Impossible d'activer / désactiver", "error");
+                        console.log(arguments);
+                    });
+                });
+            }).fail(function (response) {
+                $.notify("une erreur c'est produite lors du chargement de la page", "error");
+                console.log(arguments);
+            });
+    }
+
+    $(function () {
+        loadTheme();
+
+        $('.btn-quickTheme').on('click', function () {
+            $('#quickTheme').removeClass('hidden');
+        });
+        $('#addTheme').on('click', function () {
+            var lib = $('#quickTheme input[type="text"]').val();
+            var datas = { libelle: lib };
+            $.ajax({
+                url: '@Url.Action("AjaxQuickCreate", "Themes")',
+                method: 'post',
+                data: datas
+            }).done(function (response) {
+                console.log(response);
+                if (response.list) {
+                    var html = '';
+                    $.each(response.list, function (index, data) {
+                        html += '<option value="' + data.Id + '">' + data.Libelle + '</option>';
+                    });
+                    $('#selectedTheme').html(html);
+                    $('#quickTheme input[type="text"]').val('');
+                    $('#quickTheme').addClass('hidden');
+                }
+            }).fail(function (response) {
+                $.notify('Une erreur s\'est produite lors de la création du thème', 'danger');
+            })
+        });
+
+    });
+</script>
